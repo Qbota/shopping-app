@@ -2,18 +2,20 @@ package com.shopping.api.model;
 
 import org.springframework.data.annotation.Id;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class User {
 
     //User props
     @Id
-    public String id;
-    public String login;
-    public String password;
+    private String id;
+    private String login;
+    private String password;
 
     //Children
-    public List<Product> shoppingList;
+    private List<Product> shoppingList = new ArrayList<>();
 
     public User(String login, String password) {
         this.login = login;
@@ -54,5 +56,7 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public void addProductToShoppingList(Product product) { this.shoppingList.add(product);}
 }
 

@@ -75,5 +75,5 @@ public class Family {
         return this.demandedProducts.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(new Product());
     }
 
-    public void addDemandedProduct(Product product) { this.demandedProducts.add(product)};
+    public void addDemandedProduct(Product product) { this.demandedProducts.add(product);}
 }

@@ -70,4 +70,10 @@ public class Family {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public Product getDemandedProduct(String name){
+        return this.demandedProducts.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(new Product());
+    }
+
+    public void addDemandedProduct(Product product) { this.demandedProducts.add(product)};
 }

@@ -12,6 +12,7 @@ public class Family {
     @Id
     private String id;
     private String name;
+    private String password;
 
     //Children
     private List<User> members =  new ArrayList<>();
@@ -60,5 +61,13 @@ public class Family {
 
     public User getMember(String login){
        return this.members.stream().filter(x -> x.getLogin().equals(login)).findFirst().orElse(new User());
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

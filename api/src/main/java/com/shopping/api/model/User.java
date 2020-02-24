@@ -9,8 +9,6 @@ import java.util.Optional;
 public class User {
 
     //User props
-    @Id
-    private String id;
     private String login;
     private String password;
 
@@ -31,14 +29,6 @@ public class User {
 
     public void setShoppingList(List<Product> shoppingList) {
         this.shoppingList = shoppingList;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getLogin() {

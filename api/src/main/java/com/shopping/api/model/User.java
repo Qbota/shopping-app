@@ -5,8 +5,9 @@ import org.springframework.data.annotation.Id;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-public class User {
+public class User{
 
     //User props
     private String login;
@@ -48,5 +49,11 @@ public class User {
     }
 
     public void addProductToShoppingList(Product product) { this.shoppingList.add(product);}
+
+    public void setProductAsBought(String id) { this.shoppingList = this.shoppingList.stream().map(product -> {
+        Product copy = new Product(product);
+        copy.setBought(true);
+        return copy;
+    }).collect(Collectors.toList());}
 }
 

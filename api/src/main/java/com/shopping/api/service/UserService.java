@@ -4,6 +4,8 @@ import com.shopping.api.model.Family;
 import com.shopping.api.model.User;
 import com.shopping.api.repository.FamilyRepository;
 import com.shopping.api.repository.helpers.FamilyRepositoryHelper;
+import com.shopping.api.validator.ModelValidator;
+import com.shopping.api.validator.ValidatorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
@@ -51,13 +53,7 @@ public class UserService {
     }
 
     private boolean userCannotBeAdded(User user) {
-        if(user == null)
-            return true;
-        if(user.getLogin().isBlank() || user.getLogin().isEmpty())
-            return true;
-        if(user.getPassword().isBlank() || user.getLogin().isEmpty())
-            return true;
-        return false;
+        return !new ValidatorFactory(user).getValidator().validate();
     }
 
 }

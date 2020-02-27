@@ -72,7 +72,7 @@ public class Family {
     }
 
     public Product getDemandedProduct(String name){
-        return this.demandedProducts.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(new Product());
+        return this.demandedProducts.stream().filter(x -> x.getName().equals(name)).findFirst().orElse( null );
     }
 
     public void addDemandedProduct(Product product) { this.demandedProducts.add(product);}

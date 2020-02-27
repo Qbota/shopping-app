@@ -17,6 +17,13 @@ public class Product {
 
     }
 
+    public Product(Product product){
+        this.id = product.getId();
+        this.name = product.getName();
+        this.dateToBuy = product.getDateToBuy();
+        this.isBought = product.getBought();
+    }
+
     public Product(String id, String name, Date dateToBuy, Boolean isBought) {
         this.id = id;
         this.name = name;

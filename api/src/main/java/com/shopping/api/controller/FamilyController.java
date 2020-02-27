@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.InvalidParameterException;
 import java.util.List;
 
 @RestController
@@ -60,6 +61,8 @@ public class FamilyController {
         try {
             return new ResponseEntity<>(userService.addNewUserToFamily(user, name), HttpStatus.CREATED);
         } catch (ChangeSetPersister.NotFoundException e) {
+            return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
+        } catch (InvalidParameterException e){
             return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
         }
     }

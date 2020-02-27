@@ -4,7 +4,6 @@ import com.shopping.api.model.Family;
 import com.shopping.api.model.User;
 import com.shopping.api.repository.FamilyRepository;
 import com.shopping.api.repository.helpers.FamilyRepositoryHelper;
-import com.shopping.api.validator.ModelValidator;
 import com.shopping.api.validator.ValidatorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -41,19 +40,41 @@ public class UserService {
     }
 
     public User addNewUserToFamily(User user, String familyName) throws ChangeSetPersister.NotFoundException, InvalidParameterException {
-        if(userCannotBeAdded(user) || familyName.isEmpty() || familyName.isBlank()){
+        if(!userIsValid(user)){
+            throw new InvalidParameterException();
+        }
+        Family targetFamily = getTargetFamily(familyName);
+        familyRepositoryHelper.addUserToFamily(user, targetFamily);
+        return user;
+    }
+
+    public User removeUserFromFamily(User user, String familyName) throws ChangeSetPersister.NotFoundException, InvalidParameterException {
+        if(!userIsValid(user)){
+            throw new InvalidParameterException();
+        }
+        Family targetFamily = getTargetFamily(familyName);
+        familyRepositoryHelper.removeUserFromFamily(user, targetFamily);
+        return user;
+    }
+
+    private Family getTargetFamily(String familyName) throws ChangeSetPersister.NotFoundException, InvalidParameterException {
+        if(familyName.isEmpty() || familyName.isBlank()){
             throw new InvalidParameterException();
         }
         Family targetFamily = familyRepository.findByName(familyName);
         if(targetFamily == null){
             throw new ChangeSetPersister.NotFoundException();
         }
-        familyRepositoryHelper.addUserToFamily(user, targetFamily);
-        return user;
+        else{
+            return targetFamily;
+        }
     }
 
-    private boolean userCannotBeAdded(User user) {
-        return !new ValidatorFactory(user).getValidator().validate();
+    private boolean userIsValid(User user) {
+        boolean isValid = new ValidatorFactory(user).getValidator().validate();
+        if(isValid && familyRepository.findByMembersLogin(user.getLogin()) != null){
+            return false;
+        }
+        return false;
     }
-
 }

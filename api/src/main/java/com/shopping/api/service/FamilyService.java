@@ -3,6 +3,7 @@ package com.shopping.api.service;
 import com.shopping.api.model.Family;
 import com.shopping.api.repository.FamilyRepository;
 import com.shopping.api.repository.helpers.FamilyRepositoryHelper;
+import com.shopping.api.validator.ValidatorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
@@ -43,18 +44,9 @@ public class FamilyService {
     }
 
     private boolean validateFamilyToCreate(Family family){
-        boolean canBeCreated = true;
-        if(family == null){
-            return !canBeCreated;
-        }
-        else if(family.getName().isBlank() || family.getName().isEmpty()){
-            return !canBeCreated;
-        }
-        else if(repository.findByName(family.getName()) != null){
-            return !canBeCreated;
-        }
-        else {
-            return canBeCreated;
-        }
+      boolean isValid = new ValidatorFactory(family).getValidator().validate();
+      if(isValid && repository.findByName(family.getName()) != null)
+          return false;
+      return true;
     }
 }

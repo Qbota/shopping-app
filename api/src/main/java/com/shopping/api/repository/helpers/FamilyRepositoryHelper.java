@@ -16,4 +16,9 @@ public class FamilyRepositoryHelper {
         family.addMemeber(user);
         return repository.save(family);
     }
+
+    public Family removeUserFromFamily(User user, Family family){
+        family.removeMember(user);
+        return repository.save(family);
+    }
 }

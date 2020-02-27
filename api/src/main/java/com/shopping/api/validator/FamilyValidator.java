@@ -1,6 +1,9 @@
 package com.shopping.api.validator;
 
 import com.shopping.api.model.Family;
+import com.shopping.api.repository.FamilyRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 class FamilyValidator extends AbstractValidator<Family> implements ModelValidator{
 
@@ -12,9 +15,9 @@ class FamilyValidator extends AbstractValidator<Family> implements ModelValidato
     public boolean validate() {
         if(isObjectNotValid())
             return false;
-        if(isStringAttributeNotValid(object.getName()))
+        else if(isStringAttributeNotValid(object.getName()))
             return false;
-        if(isStringAttributeNotValid(object.getPassword()))
+        else if(isStringAttributeNotValid(object.getPassword()))
             return false;
         return true;
     }

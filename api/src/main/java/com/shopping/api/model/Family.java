@@ -76,4 +76,8 @@ public class Family {
     }
 
     public void addDemandedProduct(Product product) { this.demandedProducts.add(product);}
+
+    public void removeMember(User user){
+        this.members.remove(user);
+    }
 }

@@ -4,6 +4,7 @@ import com.shopping.api.model.Family;
 import com.shopping.api.model.Product;
 import com.shopping.api.model.User;
 import com.shopping.api.repository.ProductRepository;
+import com.shopping.api.validator.ValidatorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,12 +27,10 @@ public class ProductService {
     }
 
     private boolean productCanBeRegistered(Product product){
-        boolean canBeRegistered = true;
-        if(product == null)
-            canBeRegistered = false;
-        else if(product.getName().isBlank() || product.getName().isEmpty())
-            canBeRegistered = false;
-        return canBeRegistered;
+        boolean isValid = new ValidatorFactory(product).getValidator().validate();
+        if(isValid && productRepository.findByName(product.getName()) != null)
+            return false;
+        return true;
     }
 
 //    public List<Product> getAllProductTemplates(){

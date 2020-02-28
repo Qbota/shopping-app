@@ -44,49 +44,37 @@ public class ProductService {
     }
 
     public List<Product> getFamilyShoppingList(String familyName) throws ChangeSetPersister.NotFoundException {
-        Family targetFamily = familyRepository.findByName(familyName);
-        if(targetFamily == null)
-            throw new ChangeSetPersister.NotFoundException();
+        Family targetFamily = findTargetFamily(familyName);
         return targetFamily.getDemandedProducts();
     }
 
     public List<Product> getUserShoppingList(String userLogin) throws ChangeSetPersister.NotFoundException {
-        Family targetFamily = familyRepository.findByMembersLogin(userLogin);
-        if(targetFamily == null)
-            throw new ChangeSetPersister.NotFoundException();
+        Family targetFamily = findTargetFamilyByUserName(userLogin);
         return targetFamily.getMember(userLogin).getShoppingList();
     }
 
     public Product addProductToUserShoppingList(Product product, String userLogin) throws ChangeSetPersister.NotFoundException {
-        Family targetFamily = familyRepository.findByMembersLogin(userLogin);
-        if(targetFamily == null)
-            throw new ChangeSetPersister.NotFoundException();
+        Family targetFamily = findTargetFamilyByUserName(userLogin);
         User user = targetFamily.getMember(userLogin);
         user.addProductToShoppingList(product);
         return familyRepositoryHelper.modifyUser(user,targetFamily).getMember(userLogin).getProduct(product.getId());
     }
 
     public Product markUserProductAsBought(String productId, String userLogin) throws ChangeSetPersister.NotFoundException {
-        Family targetFamily = familyRepository.findByMembersLogin(userLogin);
-        if(targetFamily == null)
-            throw new ChangeSetPersister.NotFoundException();
+        Family targetFamily = findTargetFamilyByUserName(userLogin);
         User user = targetFamily.getMember(userLogin);
         user.setProductAsBought(productId);
         return familyRepositoryHelper.modifyUser(user, targetFamily).getMember(userLogin).getProduct(productId);
     }
 
     public Product markFamilyProductAsBought(String productId, String familyName) throws ChangeSetPersister.NotFoundException {
-        Family targetFamily = familyRepository.findByName(familyName);
-        if(targetFamily == null)
-            throw new ChangeSetPersister.NotFoundException();
+        Family targetFamily = findTargetFamily(familyName);
         targetFamily.setProductAsBought(productId);
         return familyRepository.save(targetFamily).getDemandedProduct(productId);
     }
 
     public Product addProductToFamilyShoppingList(Product product, String familyName) throws ChangeSetPersister.NotFoundException, InvalidParameterException {
-        Family targetFamily = familyRepository.findByName(familyName);
-        if(targetFamily == null)
-            throw new ChangeSetPersister.NotFoundException();
+        Family targetFamily = findTargetFamily(familyName);
         if(!productCanBeAssigned(product)){
             throw new InvalidParameterException();
         }
@@ -103,9 +91,7 @@ public class ProductService {
     }
 
     public Product assignProductFromFamilyToUser(String productId, String familyName, String userLogin) throws ChangeSetPersister.NotFoundException {
-        Family targetFamily = familyRepository.findByName(familyName);
-        if(targetFamily == null)
-            throw new ChangeSetPersister.NotFoundException();
+        Family targetFamily = findTargetFamily(familyName);
         Product product = targetFamily.getDemandedProduct(productId);
         if(product == null)
             throw new ChangeSetPersister.NotFoundException();
@@ -118,4 +104,18 @@ public class ProductService {
         List<Product> productList = familyRepository.save(targetFamily).getMember(userLogin).getShoppingList();
         return productList.get(productList.size()-1);
     }
+
+    private Family findTargetFamily(String familyName) throws ChangeSetPersister.NotFoundException {
+        Family targetFamily = familyRepository.findByName(familyName);
+        if(targetFamily == null)
+            throw new ChangeSetPersister.NotFoundException();
+        return targetFamily;
+    }
+    private Family findTargetFamilyByUserName(String userLogin) throws ChangeSetPersister.NotFoundException {
+        Family targetFamily = familyRepository.findByMembersLogin(userLogin);
+        if(targetFamily == null)
+            throw new ChangeSetPersister.NotFoundException();
+        return targetFamily;
+    }
+
 }

@@ -3,7 +3,9 @@ package com.shopping.api.model;
 import org.springframework.data.annotation.Id;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Family {
 
@@ -60,7 +62,7 @@ public class Family {
     public void addMemeber(User user){ this.members.add(user); }
 
     public User getMember(String login){
-       return this.members.stream().filter(x -> x.getLogin().equals(login)).findFirst().orElse(new User());
+       return this.members.stream().filter(x -> x.getLogin().equals(login)).findFirst().orElse( null);
     }
 
     public String getPassword() {
@@ -71,13 +73,29 @@ public class Family {
         this.password = password;
     }
 
-    public Product getDemandedProduct(String name){
-        return this.demandedProducts.stream().filter(x -> x.getName().equals(name)).findFirst().orElse( null );
+    public Product getDemandedProduct(String id){
+        return this.demandedProducts.stream().filter(x -> x.getId().equals(id)).findFirst().orElse( null );
     }
 
-    public void addDemandedProduct(Product product) { this.demandedProducts.add(product);}
+    public void addDemandedProduct(Product product) {
+        product.setId(Integer.toString(this.demandedProducts.size()));
+        this.demandedProducts.add(product);
+    }
+
+    public void setProductAsBought(String id) { this.demandedProducts = this.demandedProducts.stream().map(product -> {
+        Product copy = new Product(product);
+        if(copy.getId().equals(id))
+            copy.setBought(true);
+        return copy;
+    }).collect(Collectors.toList());}
 
     public void removeMember(User user){
         this.members.remove(user);
+    }
+
+    public void removeProduct(Product product) {this.demandedProducts.remove(product);}
+
+    public void modifyUser(User user) {
+        Collections.replaceAll(this.members, getMember(user.getLogin()), user);
     }
 }

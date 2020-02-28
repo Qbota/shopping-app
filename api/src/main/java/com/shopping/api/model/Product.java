@@ -1,5 +1,6 @@
 package com.shopping.api.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.Id;
 
 import java.util.Date;
@@ -10,8 +11,10 @@ public class Product {
     @Id
     private String id;
     private String name;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date dateToBuy;
-    private Boolean isBought;
+    private Boolean isBought = false;
 
     public Product() {
 

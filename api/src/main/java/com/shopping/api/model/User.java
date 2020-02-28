@@ -48,12 +48,20 @@ public class User{
         this.password = password;
     }
 
-    public void addProductToShoppingList(Product product) { this.shoppingList.add(product);}
+    public void addProductToShoppingList(Product product) {
+        product.setId(Integer.toString(this.shoppingList.size()));
+        this.shoppingList.add(product);
+    }
 
     public void setProductAsBought(String id) { this.shoppingList = this.shoppingList.stream().map(product -> {
         Product copy = new Product(product);
-        copy.setBought(true);
+        if(copy.getId().equals(id))
+            copy.setBought(true);
         return copy;
     }).collect(Collectors.toList());}
+
+    public Product getProduct(String id){
+        return this.shoppingList.stream().filter(product -> product.getId().equals(id)).findFirst().orElse(new Product());
+    }
 }
 

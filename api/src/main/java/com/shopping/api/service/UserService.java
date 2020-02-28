@@ -75,6 +75,6 @@ public class UserService {
         if(isValid && familyRepository.findByMembersLogin(user.getLogin()) != null){
             return false;
         }
-        return false;
+        return true;
     }
 }

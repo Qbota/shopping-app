@@ -47,23 +47,4 @@ public class FamilyController {
         }
     }
 
-    @GetMapping("/family/{name}/user")
-    public ResponseEntity<List<User>> getMembersOfFamily(@PathVariable String name){
-        try {
-            return new ResponseEntity<>(familyService.getFamilyByName(name).getMembers(), HttpStatus.FOUND);
-        } catch (ChangeSetPersister.NotFoundException e) {
-            return new ResponseEntity<>(new Family().getMembers(), HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @PostMapping("/family/{name}/user")
-    public ResponseEntity<User> addUserToFamily(@PathVariable String name, @RequestBody User user){
-        try {
-            return new ResponseEntity<>(userService.addNewUserToFamily(user, name), HttpStatus.CREATED);
-        } catch (ChangeSetPersister.NotFoundException e) {
-            return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
-        } catch (InvalidParameterException e){
-            return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
-        }
-    }
 }

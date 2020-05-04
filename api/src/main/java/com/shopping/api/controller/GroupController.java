@@ -10,26 +10,27 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/group")
+public class GroupController {
 
-    public ResponseEntity<User> createUser(User user){
-
-    }
-
-    public ResponseEntity<List<User>> getUserList(){
+    public ResponseEntity<Group> createGroup(Group group){
 
     }
 
-    public ResponseEntity<User> authenticateUser(User user){
+    public ResponseEntity<Group> getGroup(String id){
 
     }
 
-    public ResponseEntity<User> disableUser(User user){
+    public ResponseEntity<User> assignUserByCode(String code){
 
     }
 
-    public ResponseEntity<User> enableUser(User user){
+    public ResponseEntity<Group> disableUser(Group group){
 
     }
+
+    public ResponseEntity<Group> enableUser(Group group){
+
+    }
+
 }

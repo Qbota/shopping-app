@@ -5,16 +5,17 @@ import org.springframework.data.annotation.Id;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User {
+public class Group {
 
     @Id
     private String id;
-    private String login;
-    private String password;
+    private String name;
+    private List<String> members = new ArrayList<>();
     private List<Assignment> assignmentList = new ArrayList<>();
+    private String inviteCode;
     private boolean isActive;
 
-    public User() {
+    public Group() {
     }
 
     public String getId() {
@@ -25,20 +26,20 @@ public class User {
         this.id = id;
     }
 
-    public String getLogin() {
-        return login;
+    public String getName() {
+        return name;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getPassword() {
-        return password;
+    public List<String> getMembers() {
+        return members;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setMembers(List<String> members) {
+        this.members = members;
     }
 
     public List<Assignment> getAssignmentList() {
@@ -49,12 +50,12 @@ public class User {
         this.assignmentList = assignmentList;
     }
 
-    public void addAssignement(Assignment assignment){
-        this.assignmentList.add(assignment);
+    public String getInviteCode() {
+        return inviteCode;
     }
 
-    public void removeAssignement(Assignment assignment){
-        this.assignmentList.remove(assignment);
+    public void setInviteCode(String inviteCode) {
+        this.inviteCode = inviteCode;
     }
 
     public boolean isActive() {

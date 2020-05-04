@@ -1,4 +1,4 @@
-package com.shopping.api.model;
+package com.assignments.api.model;
 
 import org.springframework.data.annotation.Id;
 
@@ -10,7 +10,6 @@ public class Group {
     @Id
     private String id;
     private String name;
-    private List<String> members = new ArrayList<>();
     private List<Assignment> assignmentList = new ArrayList<>();
     private String inviteCode;
     private boolean isActive;
@@ -32,14 +31,6 @@ public class Group {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<String> getMembers() {
-        return members;
-    }
-
-    public void setMembers(List<String> members) {
-        this.members = members;
     }
 
     public List<Assignment> getAssignmentList() {

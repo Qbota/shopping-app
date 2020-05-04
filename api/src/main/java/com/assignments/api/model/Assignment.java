@@ -1,4 +1,4 @@
-package com.shopping.api.model;
+package com.assignments.api.model;
 
 import java.util.Date;
 

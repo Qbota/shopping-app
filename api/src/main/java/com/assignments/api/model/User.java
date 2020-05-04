@@ -1,18 +1,27 @@
-package com.shopping.api.model;
+package com.assignments.api.model;
 
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Document
 public class User {
 
     @Id
     private String id;
+    @Indexed(unique = true)
     private String login;
     private String password;
     private List<Assignment> assignmentList = new ArrayList<>();
-    private boolean isActive;
+    private boolean isActive = true;
+    private String salt;
+    private String groupId;
+    @Transient
+    private String token;
 
     public User() {
     }
@@ -63,5 +72,29 @@ public class User {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

@@ -1,39 +1,72 @@
 package com.assignments.api.controller;
 
 import com.assignments.api.model.Assignment;
-import com.assignments.api.model.Group;
-import com.assignments.api.model.User;
+import com.assignments.api.service.AssignmentService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
-@RequestMapping("/assignement")
 public class AssignmentController {
 
-//    public ResponseEntity<List<Assignment>> getAssignmentListForGroup(Group group){
-//
-//    }
-//
-//    public ResponseEntity<List<Assignment>> getAssignmentListForUser(User user){
-//
-//    }
-//
-//    public ResponseEntity<Assignment> addAssignmentForGroup(Assignment assignment){
-//
-//    }
-//
-//    public ResponseEntity<Assignment> addAssignmentForUser(Assignment assignment){
-//
-//    }
-//
-//    public ResponseEntity<Assignment> attachAssignmentToUser(Assignment assignment){
-//
-//    }
-//
-//    public ResponseEntity<Assignment> updateAssignment(Assignment assignment){
-//
-//    }
+    @Autowired
+    private AssignmentService assignmentService;
+
+    @GetMapping("/group/{groupId}/assignment")
+    public ResponseEntity<Object> getAssignmentListForGroup(@PathVariable String groupId){
+        try{
+            return new ResponseEntity<>(assignmentService.getAssignmentListForGroup(groupId), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/user/{userId}/assignment")
+    public ResponseEntity<Object> getAssignmentListForUser(@PathVariable String userId){
+        try{
+            return new ResponseEntity<>(assignmentService.getAssignmentListForUser(userId), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/group/{groupId}/assignment")
+    public ResponseEntity<Object> addAssignmentForGroup(@RequestBody Assignment assignment, @PathVariable String groupId){
+        try{
+            assignmentService.createAssignmentForGroup(assignment, groupId);
+            return new ResponseEntity<>("Assignment created", HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/user/{userId}/assignment")
+    public ResponseEntity<Object> addAssignmentForUser(@RequestBody Assignment assignment, @PathVariable String userId){
+        try{
+            assignmentService.createAssignmentForUser(assignment, userId);
+            return new ResponseEntity<>("Assignment created", HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/assignment/{assignmentId}/user/{userId}")
+    public ResponseEntity<Object> attachAssignmentToUser(@PathVariable String userId, @PathVariable String assignmentId){
+        try{
+            return new ResponseEntity<>(assignmentService.changeAssigneeToUser(assignmentId, userId), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/assignment/{assignmentId}/group/{groupId}")
+    public ResponseEntity<Object> attachAssignmentToGroup(@PathVariable String groupId, @PathVariable String assignmentId){
+        try{
+            return new ResponseEntity<>(assignmentService.changeAssigneeToGroup(assignmentId, groupId), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

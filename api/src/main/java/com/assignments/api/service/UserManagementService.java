@@ -16,7 +16,7 @@ public class UserManagementService {
     private UserRepository userRepository;
 
     public User createUser(User user) throws Exception{
-        Validators.userCanBeInsertedValidator(user);
+        Validators.insertUserValidator(user);
         String salt = AuthenticationUtils.generateSalt();
         user.setSalt(salt);
 
@@ -37,8 +37,8 @@ public class UserManagementService {
     }
 
     public User authenticate(User user) throws Exception{
-        Validators.userCanBeAuthenticated(user);
-        User repoUser = userRepository.findByLogin(user.getLogin()).orElseThrow(Exception::new);
+        Validators.authenticateUserValidator(user);
+        User repoUser = userRepository.findByLoginAndIsActiveTrue(user.getLogin()).orElseThrow(Exception::new);
 
         if(!passwordsAreMatching(user, repoUser))
             throw new Exception("Passwords not matching");

@@ -16,7 +16,6 @@ public class User {
     @Indexed(unique = true)
     private String login;
     private String password;
-    private List<Assignment> assignmentList = new ArrayList<>();
     private boolean isActive = true;
     private String salt;
     private String groupId;
@@ -48,22 +47,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public List<Assignment> getAssignmentList() {
-        return assignmentList;
-    }
-
-    public void setAssignmentList(List<Assignment> assignmentList) {
-        this.assignmentList = assignmentList;
-    }
-
-    public void addAssignement(Assignment assignment){
-        this.assignmentList.add(assignment);
-    }
-
-    public void removeAssignement(Assignment assignment){
-        this.assignmentList.remove(assignment);
     }
 
     public boolean isActive() {

@@ -1,9 +1,16 @@
 package com.assignments.api.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
+
 import java.util.Date;
 
+@Document
 public class Assignment {
 
+    @Id
+    private String id;
     private String name;
     private String description;
     private String type;
@@ -11,15 +18,8 @@ public class Assignment {
     private Date end;
     private String addedBy;
     private String state;
+    private String assignee;
 
-    public Assignment(String name, String description, String type, Date begin, Date end, String addedBy) {
-        this.name = name;
-        this.description = description;
-        this.type = type;
-        this.begin = begin;
-        this.end = end;
-        this.addedBy = addedBy;
-    }
     public Assignment(){
 
     }
@@ -78,5 +78,21 @@ public class Assignment {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getAssignee() {
+        return assignee;
+    }
+
+    public void setAssignee(String assignee) {
+        this.assignee = assignee;
     }
 }

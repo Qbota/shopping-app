@@ -1,18 +1,20 @@
 package com.assignments.api.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Document
 public class Group {
 
     @Id
     private String id;
     private String name;
-    private List<Assignment> assignmentList = new ArrayList<>();
     private String inviteCode;
-    private boolean isActive;
+    private boolean isActive = true;
 
     public Group() {
     }
@@ -33,14 +35,6 @@ public class Group {
         this.name = name;
     }
 
-    public List<Assignment> getAssignmentList() {
-        return assignmentList;
-    }
-
-    public void setAssignmentList(List<Assignment> assignmentList) {
-        this.assignmentList = assignmentList;
-    }
-
     public String getInviteCode() {
         return inviteCode;
     }
@@ -56,4 +50,5 @@ public class Group {
     public void setActive(boolean active) {
         isActive = active;
     }
+
 }

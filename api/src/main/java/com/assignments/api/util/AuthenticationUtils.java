@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 
+import com.assignments.api.security.SecurityConstants;
 import com.google.common.hash.Hashing;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -22,10 +23,10 @@ public class AuthenticationUtils {
     private static final int HOUR = MINUTE*60;
 
     private static final long TOKEN_EXPIRATION_TIME = 15*MINUTE;
-    private static final String SECRET_KEY = "secret";
+
 
     private static SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS512;
-    private static byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(SECRET_KEY);
+    private static byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(SecurityConstants.SECRET);
     private static Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
 
     public static String generateSalt(){

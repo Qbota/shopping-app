@@ -22,6 +22,7 @@ public class UserManagementService {
 
         String hashedPassword = AuthenticationUtils.generateSHA256HashOf(user.getPassword()+user.getSalt());
         user.setPassword(hashedPassword);
+        user.setToken(AuthenticationUtils.generateTokenFor(user));
 
         return AuthenticationUtils.secureUserDataBeforeReturn(userRepository.insert(user));
     }

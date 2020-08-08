@@ -13,7 +13,3 @@
         name: "NavBarComponent"
     }
 </script>
-
-<style scoped>
-
-</style>

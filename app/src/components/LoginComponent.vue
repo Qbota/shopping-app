@@ -1,5 +1,5 @@
 <template>
-    <v-card raised outlined>
+    <v-card raised outlined v-on:keyup.enter="loginAction()">
         <v-form class="px-12 pt-10 pb-5">
             <v-row>
                 <v-text-field v-model="user.login" rounded placeholder="Login" prepend-icon="mdi-lock" outlined/>
@@ -12,6 +12,11 @@
                 <v-btn @click="loginAction()" rounded>Login</v-btn>
             </v-row>
         </v-form>
+      <v-card-actions>
+        <v-row justify="center">
+          <v-btn @click="$router.push('register')">Register</v-btn>
+        </v-row>
+      </v-card-actions>
     </v-card>
 </template>
 

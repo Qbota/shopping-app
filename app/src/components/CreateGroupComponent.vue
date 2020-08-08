@@ -9,7 +9,7 @@
           <v-btn v-model="assign">Assign to existing group</v-btn>
         </v-btn-toggle>
       </v-row>
-      <div v-if="create">
+      <div v-if="create" v-on:keyup.enter="creatGroup()">
         <v-form v-model="valid" ref="form" class="px-12 pt-10 pb-5" >
           <v-row>
             <v-text-field v-model="name" :rules="nameRules" label="Group Name" counter="30" outlined rounded/>
@@ -19,7 +19,7 @@
           <v-spacer/><v-btn class="mb-2 mr-2 px-5" rounded :disabled="!valid" @click="creatGroup()">Create</v-btn>
         </v-card-actions>
       </div>
-      <div v-if="assign">
+      <div v-if="assign" v-on:keyup.enter="assignToGroup()">
         <v-form v-model="valid" ref="form" class="px-12 pt-10 pb-5" >
           <v-row>
             <v-text-field v-model="code" :rules="codeRules" label="Group Code" outlined rounded/>

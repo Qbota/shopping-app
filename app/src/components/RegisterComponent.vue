@@ -1,14 +1,14 @@
 <template>
-  <v-card raised outlined>
+  <v-card raised outlined v-on:keyup.enter="registerInApi()">
     <v-form v-model="valid" ref="form" class="px-12 pt-10 pb-5">
       <v-row>
         <v-text-field v-model="user.login" :rules="loginRules" label="Login" counter="15" required outlined rounded prepend-icon="mdi-account"/>
       </v-row>
       <v-row>
-        <v-text-field v-model="user.password" :rules="passwordRules" label="Password" counter="15" required outlined rounded prepend-icon="mdi-account-key"/>
+        <v-text-field v-model="user.password" :rules="passwordRules" label="Password" counter="15" type="password" required outlined rounded prepend-icon="mdi-account-key"/>
       </v-row>
       <v-row>
-        <v-text-field v-model="passwordConfirm" :rules="passwordConfirmRules" label="Retype password" counter="15" required outlined rounded prepend-icon="mdi-account-key"/>
+        <v-text-field v-model="passwordConfirm" :rules="passwordConfirmRules" label="Retype password" counter="15" type="password" required outlined rounded prepend-icon="mdi-account-key"/>
       </v-row>
     </v-form>
     <v-card-actions>

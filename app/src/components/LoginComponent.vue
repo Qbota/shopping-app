@@ -2,10 +2,10 @@
     <v-card raised outlined>
         <v-form class="px-12 pt-10 pb-5">
             <v-row>
-                <v-text-field v-model="login" rounded placeholder="Login" prepend-icon="mdi-lock" outlined/>
+                <v-text-field v-model="user.login" rounded placeholder="Login" prepend-icon="mdi-lock" outlined/>
             </v-row>
             <v-row>
-                <v-text-field v-model="password" rounded placeholder="Password" type="password" prepend-icon="mdi-lock" outlined/>
+                <v-text-field v-model="user.password" rounded placeholder="Password" type="password" prepend-icon="mdi-lock" outlined/>
             </v-row>
             <v-row>
                 <v-spacer/>
@@ -16,15 +16,22 @@
 </template>
 
 <script>
+import axios from 'axios'
     export default {
         name: "LoginComponent",
-        data: () => ({
-            login: '',
-            password: ''
-        }),
+        data: function (){
+          return {
+            user: {
+              login: '',
+              password: ''
+            }
+        }
+      },
         methods: {
-            loginAction() {
-                console.log(this.login, this.password)
+            async loginAction() {
+              axios.post('http://localhost:8080/user/login', this.user)
+                  .then((res) => this.$store.commit('setToken', res.data.token))
+                  .catch((err) => console.log(err))
             }
         }
     }

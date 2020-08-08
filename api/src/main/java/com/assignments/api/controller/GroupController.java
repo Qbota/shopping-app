@@ -41,8 +41,7 @@ public class GroupController {
     @PostMapping("/{code}/user/{userId}")
     public ResponseEntity<Object> assignUserByCode(@PathVariable String userId, @PathVariable String code){
         try{
-            groupManagementService.addUserToGroup(userId, code);
-            return new ResponseEntity<>("User assigned", HttpStatus.OK);
+            return new ResponseEntity<>(groupManagementService.addUserToGroup(userId, code), HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

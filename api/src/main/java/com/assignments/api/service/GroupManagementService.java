@@ -49,13 +49,14 @@ public class GroupManagementService {
         return groupRepository.findByIdAndIsActiveTrue(id).orElseThrow(Exception::new);
     }
 
-    public void addUserToGroup(String userId, String groupCode) throws Exception{
+    public Group addUserToGroup(String userId, String groupCode) throws Exception{
         Group target = groupRepository.findByInviteCodeAndIsActiveTrue(groupCode).orElseThrow(Exception::new);
         User user = userRepository.findByIdAndIsActiveTrue(userId).orElseThrow(Exception::new);
         if(user.getGroupId() != null)
             throw new Exception("User already in group");
         user.setGroupId(target.getId());
         userRepository.save(user);
+        return target;
     }
 
     public void setStateOfGroup(boolean state, String id) throws Exception{

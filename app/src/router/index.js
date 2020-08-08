@@ -1,27 +1,42 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import LoginView from "@/views/LoginView";
-import AssignmentsView from "@/views/AssignmentsView";
-import RegisterView from "@/views/RegisterView";
+import MainView from "@/views/MainView";
+import DragComponent from "@/components/DragComponent";
+import LandingView from "@/views/LandingView";
+import LoginComponent from "@/components/LoginComponent";
+import RegisterComponent from "@/components/RegisterComponent";
+import CreateGroupComponent from "@/components/CreateGroupComponent";
+import store from '@/store/index'
 
 Vue.use(VueRouter)
 
   const routes = [
     {
-      path: '/login',
-      name: 'Login',
-      component: LoginView
+      path: '/',
+      name: 'Landing',
+      component: LandingView,
+      redirect: '/login',
+      children: [
+        {path: 'login',name: 'Login', component: LoginComponent},
+        {path: 'register', component: RegisterComponent},
+        {path: 'group', name: 'CreateGroup', component: CreateGroupComponent}
+      ]
     },
   {
-    path: '/assignments',
-    name: 'Assignemnts',
-    component: AssignmentsView
-  },
-    {
-      path: '/register',
-      name: 'Register',
-      component: RegisterView
-    }
+    path: '/main',
+    name: 'Main',
+    component: MainView,
+    beforeEnter: (to, from, next) => {
+      if(store.state.user == null) next({name: 'Login'})
+      else if(store.state.user.groupId == null) next({name: 'CreateGroup'})
+      else next()
+    },
+    children: [
+      {path: 'assignments', component: DragComponent},
+      {path: 'group', component: null},
+      {path: 'account', component: null}
+    ]
+  }
 ]
 
 const router = new VueRouter({

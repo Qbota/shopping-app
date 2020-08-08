@@ -46,7 +46,10 @@ name: "RegisterComponent",
   methods: {
     async registerInApi(){
       axios.post('http://localhost:8080/user/register', this.user)
-        .then((res) => this.$store.commit('setToken', res.data.token))
+        .then((res) => {
+          this.$store.commit('setUser', res.data)
+          this.$router.push('main')
+        })
         .catch((err) => console.log(err))
     }
   }

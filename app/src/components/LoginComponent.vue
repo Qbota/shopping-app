@@ -30,8 +30,13 @@ import axios from 'axios'
         methods: {
             async loginAction() {
               axios.post('http://localhost:8080/user/login', this.user)
-                  .then((res) => this.$store.commit('setToken', res.data.token))
+                  .then((res) => {
+                    this.$store.commit('setUser', res.data)
+                    console.log(res.data)
+                    this.$router.push('main')
+                  })
                   .catch((err) => console.log(err))
+
             }
         }
     }

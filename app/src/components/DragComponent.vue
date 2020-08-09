@@ -7,15 +7,12 @@
                     <v-subheader>
                       Group tasks
                     </v-subheader>
-                    <draggable v-model="mainItem" :options="{group:'people'}" style="min-height: 10px" @end="saveDashboard()">
-                      <template v-for="item in mainItem">
+                    <draggable v-model="groupItems" :options="{group:'people'}" style="min-height: 10px" @change="addedToGroup($event)">
+                      <template v-for="item in groupItems">
                         <v-list-item :key="item.id">
-                          <v-list-item-avatar>
-                            <img :src="item.avatar">
-                          </v-list-item-avatar>
                           <v-list-item-content>
-                            <v-list-item-title v-html="item.title"></v-list-item-title>
-                            <v-list-item-subtitle v-html="item.subtitle"></v-list-item-subtitle>
+                            Task: {{item.name}} <br>
+                            Added By: {{item.addedBy}}
                           </v-list-item-content>
                         </v-list-item>
                       </template>
@@ -27,17 +24,14 @@
                   <v-col v-bind:key="member.id" cols="2">
                         <v-list two-line elevation="1">
                           <v-subheader>
-                            List of tasks to do by user of id: {{member.id}}
+                            List of tasks to do by {{member.data.login}}
                           </v-subheader>
-                          <draggable v-model="member.items" :options="{group:'people'}" style="min-height: 10px" @end="saveDashboard()">
+                          <draggable v-model="member.items" :options="{group:'people'}" style="min-height: 10px" @change="addedToUser($event, member)">
                             <template v-for="item in member.items">
                               <v-list-item :key="item.id">
-                                <v-list-item-avatar>
-                                  <img :src="item.avatar">
-                                </v-list-item-avatar>
                                 <v-list-item-content>
-                                  <v-list-item-title v-html="item.title"></v-list-item-title>
-                                  <v-list-item-subtitle v-html="item.subtitle"></v-list-item-subtitle>
+                                  Task: {{item.name}} <br>
+                                  Added By: {{item.addedBy}}
                                 </v-list-item-content>
                               </v-list-item>
                             </template>
@@ -53,77 +47,62 @@
 
 <script>
 import draggable from 'vuedraggable'
-    export default {
+import axios from "axios";
+
+export default {
         components: {
           draggable
         },
+      created() {
+        this.getGroupItemsFromDb()
+        this.getGroupMembersFromApi()
+      },
       methods: {
-         saveDashboard(){
-          console.log('saving dashboard in DB')
+        async addedToUser(event, user){
+          if(event.removed == null){
+            await axios.put('http://localhost:8080/assignment/'+ event.added.element.id+'/user/' + user.data.id,null, {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
+          }
+        },
+        async addedToGroup(event){
+          if(event.removed == null){
+            await axios.put('http://localhost:8080/assignment/'+ event.added.element.id+'/group/' + this.$store.state.user.groupId,null, {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
+
+          }
+        },
+        async getGroupMembersFromApi(){
+          axios.get('http://localhost:8080/group/' + this.$store.state.user.groupId + '/user', {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
+              .then((res) => {
+                  res.data.forEach((data) => {
+                    this.members.push({
+                      data: data,
+                      items: []
+                    })
+                  })
+                this.getAssignmentsForMembers()
+              })
+              .catch((err) => console.log(err))
+        },
+        getAssignmentsForMembers(){
+          this.members.map(member => member.data.id)
+            .forEach(id => this.getAssignmentsForMember(id))
+        },
+        getAssignmentsForMember(id){
+          axios.get('http://localhost:8080/user/' + id + '/assignment', {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
+              .then(res => {
+                this.members.find(x => x.data.id ===id).items = res.data
+              })
+        },
+        async getGroupItemsFromDb(){
+          axios.get('http://localhost:8080/group/' + this.$store.state.user.groupId + '/assignment', {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
+              .then((res) => this.groupItems = res.data)
+              .catch((err) => console.log(err))
         }
       },
-        data: () => ( {
-              members:[{
-                id: 1,
-                items: []
-              },
-                {
-                  id: 2,
-                  items: []
-                },
-                {
-                  id: 3,
-                  items: []
-                },
-                {
-                  id: 4,
-                  items: []
-                },
-                {
-                  id: 5,
-                  items: []
-                },
-                {
-                  id: 6,
-                  items: []
-                },
-                {
-                  id: 7,
-                  items: []
-                }],
-              mainItem: [
-                {
-                  id: 1,
-                  avatar: "https://s3.amazonaws.com/vuetify-docs/images/lists/1.jpg",
-                  title: "Brunch this life?",
-                  subtitle: "Subtitle 1"
-                },
-                {
-                  id: 2,
-                  avatar: "https://s3.amazonaws.com/vuetify-docs/images/lists/2.jpg",
-                  title: "Winter Lunch",
-                  subtitle: "Subtitle 2"
-                },
-                {
-                  id: 3,
-                  avatar: "https://s3.amazonaws.com/vuetify-docs/images/lists/3.jpg",
-                  title: "Oui oui",
-                  subtitle: "Subtitle 3"
-                },
-                {
-                  id: 4,
-                  avatar: "https://s3.amazonaws.com/vuetify-docs/images/lists/4.jpg",
-                  title: "Brunch this weekend?",
-                  subtitle: "Subtitle 4"
-                },
-                {
-                  id: 5,
-                  avatar: "https://s3.amazonaws.com/vuetify-docs/images/lists/5.jpg",
-                  title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>',
-                  subtitle: "Subtitle 5"
-                }
-              ]
-            }
-        ),
+        data: function (){
+          return {
+            members: [],
+            groupItems: []
+          }
+        },
     }
 </script>

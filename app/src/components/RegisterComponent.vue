@@ -35,7 +35,7 @@ name: "RegisterComponent",
     ],
     passwordRules: [
         v => !!v || 'Password is required',
-        v => (v && v.length > 8) || 'Password must be longer than 8 characters'
+        v => (v && v.length >= 8) || 'Password must be longer than 8 characters'
     ],
     passwordConfirmRules:[
         v => !!v || 'Please confirm password',

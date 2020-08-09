@@ -17,6 +17,12 @@
           <v-btn @click="$router.push('register')">Register</v-btn>
         </v-row>
       </v-card-actions>
+      <v-snackbar v-model="snackBar" top>
+        Error during login action
+        <v-btn text dark @click="snackBar = false">
+          Close
+        </v-btn>
+      </v-snackbar>
     </v-card>
 </template>
 
@@ -26,6 +32,7 @@ import axios from 'axios'
         name: "LoginComponent",
         data: function (){
           return {
+            snackBar: false,
             user: {
               login: '',
               password: ''
@@ -40,9 +47,12 @@ import axios from 'axios'
                     console.log(res.data)
                     this.$router.push('main')
                   })
-                  .catch((err) => console.log(err))
+                  .catch(() => this.showErrorMessage())
 
-            }
+            },
+          showErrorMessage(){
+              this.snackBar = true
+          }
         }
     }
 </script>

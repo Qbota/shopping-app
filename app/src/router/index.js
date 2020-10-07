@@ -8,6 +8,8 @@ import RegisterComponent from "@/components/RegisterComponent";
 import CreateGroupComponent from "@/components/CreateGroupComponent";
 import store from '@/store/index'
 import MyTasksComponent from "@/components/MyTasksComponent";
+import MyGroupComponent from "@/components/MyGroupComponent";
+import CreateComponent from "@/components/CreateComponent";
 
 Vue.use(VueRouter)
 
@@ -34,8 +36,8 @@ Vue.use(VueRouter)
     },
     children: [
       {path: 'assignments', component: DragComponent},
-      {path: 'group', component: null},
-      {path: 'account', component: null},
+      {path: 'group', component: MyGroupComponent},
+      {path: 'create', component: CreateComponent},
       {path: 'tasks', component: MyTasksComponent}
     ]
   }

@@ -15,7 +15,7 @@
               </p>
             </v-card-text>
             <v-card-actions>
-              <v-spacer/><v-btn text>Change state</v-btn>
+              <v-spacer/><v-btn text @click="launchDialog(task)">Change state</v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -24,10 +24,18 @@
     <v-dialog v-model="dialog" scrollable max-width="300pt">
       <v-card>
         <v-card-title>Choose state</v-card-title>
-        <v-list>
-          <v-list-item>Done</v-list-item>
-          <v-list-item>In progress</v-list-item>
-        </v-list>
+        <v-card-text>
+          <v-radio-group v-model="radioValue">
+            <v-radio label="To Do" value="To Do"></v-radio>
+            <v-radio label="In Progress" value="In Progress"></v-radio>
+            <v-radio label="Done" value="Done"></v-radio>
+          </v-radio-group>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer/>
+          <v-btn @click="updateTaskState()">Confirm</v-btn>
+          <v-btn @click="closeDialog()">Cancel</v-btn>
+        </v-card-actions>
       </v-card>
     </v-dialog>
   </v-content>
@@ -44,7 +52,9 @@ name: "MyTasksComponent",
   data: function (){
     return {
       tasks: [],
-      dialog: true
+      dialog: false,
+      chosen: null,
+      radioValue: null
     }
   },
   methods: {
@@ -52,11 +62,26 @@ name: "MyTasksComponent",
       axios.get('http://localhost:8080/user/' + this.$store.state.user.id + '/assignment', {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
       .then(res => this.tasks = res.data)
     },
+    async updateTaskState(){
+      let task = this.chosen
+      task.state = this.radioValue
+      console.log(task)
+      await axios.put('http://localhost:8080/assignment', task,{headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
+      this.closeDialog()
+    },
     formatDate(value){
-      let splitted = value.split('T')
-      let date = splitted[0]
-      let time = splitted[1].substring(0,5)
+      let split = value.split('T')
+      let date = split[0]
+      let time = split[1].substring(0,5)
       return date + ' ' +time
+    },
+    launchDialog(task){
+      this.chosen = task
+      this.dialog = true
+    },
+    closeDialog(){
+      this.dialog = false
+      this.chosen = null
     }
   }
 }

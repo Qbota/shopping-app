@@ -2,7 +2,6 @@ package com.assignments.api.controller;
 
 import com.assignments.api.model.Group;
 import com.assignments.api.service.group.GroupManagementService;
-import com.assignments.api.service.group.GroupManagementServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

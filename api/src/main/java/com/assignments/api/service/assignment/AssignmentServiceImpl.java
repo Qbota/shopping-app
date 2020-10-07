@@ -73,8 +73,7 @@ public class AssignmentServiceImpl implements AssignmentService{
     public List<Assignment> getAssignmentForGroupAndItsMembers(String groupId) throws Exception {
         Group group = groupRepository.findByIdAndIsActiveTrue(groupId).orElseThrow();
         List<User> userList = userRepository.findByGroupId(groupId).orElseThrow();
-        List<Assignment> assignmentList = new ArrayList<>();
-        assignmentList.addAll(replaceIdWithName(group.getName(),assignmentRepository.findByAssignee(groupId).orElseThrow()));
+        List<Assignment> assignmentList = new ArrayList<>(replaceIdWithName(group.getName(), assignmentRepository.findByAssignee(groupId).orElseThrow()));
         userList.forEach(user -> assignmentList.addAll(replaceIdWithName(user.getLogin(), assignmentRepository.findByAssignee(user.getId()).orElseThrow())));
         return assignmentList;
     }

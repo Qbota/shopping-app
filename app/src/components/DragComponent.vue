@@ -9,11 +9,19 @@
                     </v-subheader>
                     <draggable v-model="groupItems" :options="{group:'people'}" style="min-height: 10px" @change="addedToGroup($event)">
                       <template v-for="item in groupItems">
-                        <v-list-item :key="item.id">
+                        <v-list-item :key="item.id" v-if="item.state !== 'Done'">
                           <v-list-item-content>
-                            Task: {{item.name}} <br>
-                            Added By: {{item.addedBy}}
+                            <v-list-item-title>{{item.name}}</v-list-item-title>
+                            <v-list-item-subtitle>{{item.description}} <br>
+                              Deadline: {{formatDate(item.end)}} <br>
+                              State: {{item.state}}
+                            </v-list-item-subtitle>
                           </v-list-item-content>
+                          <v-list-item-action>
+                            <v-btn icon @click="launchDialog(item)">
+                              <v-icon>mdi-pencil</v-icon>
+                            </v-btn>
+                          </v-list-item-action>
                         </v-list-item>
                       </template>
                     </draggable>
@@ -28,11 +36,19 @@
                           </v-subheader>
                           <draggable v-model="member.items" :options="{group:'people'}" style="min-height: 10px" @change="addedToUser($event, member)">
                             <template v-for="item in member.items">
-                              <v-list-item :key="item.id">
+                              <v-list-item :key="item.id" v-if="item.state !== 'Done'">
                                 <v-list-item-content>
-                                  Task: {{item.name}} <br>
-                                  Added By: {{item.addedBy}}
+                                  <v-list-item-title>{{item.name}}</v-list-item-title>
+                                  <v-list-item-subtitle>{{item.description}} <br>
+                                    Deadline: {{formatDate(item.end)}} <br>
+                                    State: {{item.state}}
+                                  </v-list-item-subtitle>
                                 </v-list-item-content>
+                                  <v-list-item-action>
+                                    <v-btn icon @click="launchDialog(item)">
+                                      <v-icon>mdi-pencil</v-icon>
+                                    </v-btn>
+                                  </v-list-item-action>
                               </v-list-item>
                             </template>
                           </draggable>
@@ -41,6 +57,23 @@
                   </template>
                 </v-row>
             </v-container>
+          <v-dialog v-model="dialog" scrollable max-width="300pt">
+            <v-card>
+              <v-card-title>Choose state</v-card-title>
+              <v-card-text>
+                <v-radio-group v-model="radioValue">
+                  <v-radio label="To Do" value="To Do"></v-radio>
+                  <v-radio label="In Progress" value="In Progress"></v-radio>
+                  <v-radio label="Done" value="Done"></v-radio>
+                </v-radio-group>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer/>
+                <v-btn @click="updateTaskState()">Confirm</v-btn>
+                <v-btn @click="closeDialog()">Cancel</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
         </v-content>
     </v-app>
 </template>
@@ -71,37 +104,43 @@ export default {
         },
         async getGroupMembersFromApi(){
           axios.get('http://localhost:8080/group/' + this.$store.state.user.groupId + '/user', {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
-              .then((res) => {
-                  res.data.forEach((data) => {
-                    this.members.push({
-                      data: data,
-                      items: []
-                    })
-                  })
-                this.getAssignmentsForMembers()
-              })
+              .then(res => this.members = res.data)
               .catch((err) => console.log(err))
-        },
-        getAssignmentsForMembers(){
-          this.members.map(member => member.data.id)
-            .forEach(id => this.getAssignmentsForMember(id))
-        },
-        getAssignmentsForMember(id){
-          axios.get('http://localhost:8080/user/' + id + '/assignment', {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
-              .then(res => {
-                this.members.find(x => x.data.id ===id).items = res.data
-              })
         },
         async getGroupItemsFromDb(){
           axios.get('http://localhost:8080/group/' + this.$store.state.user.groupId + '/assignment', {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
               .then((res) => this.groupItems = res.data)
               .catch((err) => console.log(err))
+        },
+        formatDate(value){
+          let split = value.split('T')
+          let date = split[0]
+          let time = split[1].substring(0,5)
+          return date + ' ' +time
+        },
+        launchDialog(task){
+          this.chosen = task
+          this.dialog = true
+        },
+        closeDialog(){
+          this.dialog = false
+          this.chosen = null
+        },
+        async updateTaskState(){
+          let task = this.chosen
+          task.state = this.radioValue
+          console.log(task)
+          await axios.put('http://localhost:8080/assignment', task,{headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
+          this.closeDialog()
         }
       },
         data: function (){
           return {
             members: [],
-            groupItems: []
+            groupItems: [],
+            dialog: false,
+            chosen: null,
+            radioValue: null
           }
         },
     }

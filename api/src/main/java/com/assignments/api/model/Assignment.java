@@ -23,6 +23,18 @@ public class Assignment {
 
     }
 
+    public Assignment(Assignment assignment) {
+        this.id = assignment.getId();
+        this.name = assignment.getName();
+        this.description = assignment.getDescription();
+        this.type = assignment.getType();
+        this.begin = assignment.getBegin();
+        this.end = assignment.getEnd();
+        this.addedBy = assignment.getAddedBy();
+        this.state = assignment.getState();
+        this.assignee = assignment.getAssignee();
+    }
+
     public String getName() {
         return name;
     }

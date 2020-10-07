@@ -50,7 +50,7 @@ public class GroupController {
     @GetMapping("/{groupId}/user")
     public ResponseEntity<Object> getUserListForGroup(@PathVariable String groupId){
         try{
-            return new ResponseEntity<>(groupManagementService.getUserListForGroup(groupId), HttpStatus.OK);
+            return new ResponseEntity<>(groupManagementService.getUserListWithAssignments(groupId), HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

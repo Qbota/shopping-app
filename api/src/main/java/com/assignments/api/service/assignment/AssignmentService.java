@@ -13,5 +13,6 @@ public interface AssignmentService {
     Assignment changeAssigneeToUser(String assignmentId, String userId) throws Exception;
     Assignment changeAssigneeToGroup(String assignmentId, String groupId) throws Exception;
     Assignment editAssignment(Assignment assignment) throws Exception;
+    List<Assignment> getAssignmentForGroupAndItsMembers(String groupId) throws Exception;
 
 }

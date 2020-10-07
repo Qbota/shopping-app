@@ -10,6 +10,7 @@ import com.assignments.api.util.Validators;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -66,5 +67,25 @@ public class AssignmentServiceImpl implements AssignmentService{
         if(assignment == null)
             throw new Exception("Assignment was null");
         return assignmentRepository.save(assignment);
+    }
+
+    @Override
+    public List<Assignment> getAssignmentForGroupAndItsMembers(String groupId) throws Exception {
+        Group group = groupRepository.findByIdAndIsActiveTrue(groupId).orElseThrow();
+        List<User> userList = userRepository.findByGroupId(groupId).orElseThrow();
+        List<Assignment> assignmentList = new ArrayList<>();
+        assignmentList.addAll(replaceIdWithName(group.getName(),assignmentRepository.findByAssignee(groupId).orElseThrow()));
+        userList.forEach(user -> assignmentList.addAll(replaceIdWithName(user.getLogin(), assignmentRepository.findByAssignee(user.getId()).orElseThrow())));
+        return assignmentList;
+    }
+
+    private List<Assignment> replaceIdWithName(String login, List<Assignment> assignmentList){
+        List<Assignment> modified = new ArrayList<>();
+        assignmentList.forEach(assignment -> {
+            Assignment modifiedAssignment = new Assignment(assignment);
+            modifiedAssignment.setAssignee(login);
+            modified.add(modifiedAssignment);
+        });
+        return modified;
     }
 }

@@ -1,5 +1,7 @@
 package com.assignments.api.service.user;
 
+import com.assignments.api.model.Assignment;
+import com.assignments.api.repository.AssignmentRepository;
 import com.assignments.api.util.AuthenticationUtils;
 import com.assignments.api.util.Validators;
 import com.assignments.api.model.User;
@@ -7,13 +9,19 @@ import com.assignments.api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserManagementServiceImpl implements UserManagementService{
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private AssignmentRepository assignmentRepository;
 
     public User createUser(User user) throws Exception{
         Validators.insertUserValidator(user);
@@ -55,4 +63,13 @@ public class UserManagementServiceImpl implements UserManagementService{
         return inputPasswordHash.equals(repoPasswordHash);
     }
 
+    @Override
+    public Map<String, Object> getUserWithAssignments(String id) throws Exception {
+        Map<String, Object> result = new HashMap<>();
+        User user = userRepository.findById(id).orElseThrow(Exception::new);
+        result.put("data", user);
+        List<Assignment> assignmentList = assignmentRepository.findByAssignee(user.getId()).orElse(new ArrayList<>());
+        result.put("items", assignmentList);
+        return result;
+    }
 }

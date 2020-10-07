@@ -2,8 +2,10 @@ package com.assignments.api.service.group;
 
 import com.assignments.api.model.Group;
 import com.assignments.api.model.User;
+import com.assignments.api.repository.AssignmentRepository;
 import com.assignments.api.repository.GroupRepository;
 import com.assignments.api.repository.UserRepository;
+import com.assignments.api.service.user.UserManagementService;
 import com.assignments.api.util.AuthenticationUtils;
 import com.assignments.api.util.CodeGenerator;
 import com.assignments.api.util.Validators;
@@ -11,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class GroupManagementServiceImpl implements GroupManagementService{
@@ -22,6 +26,10 @@ public class GroupManagementServiceImpl implements GroupManagementService{
     private GroupRepository groupRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private AssignmentRepository assignmentRepository;
+    @Autowired
+    private UserManagementService userManagementService;
 
     public Group createGroup(Group group) throws Exception{
         Validators.insertGroupValidator(group);
@@ -78,5 +86,22 @@ public class GroupManagementServiceImpl implements GroupManagementService{
         List<User> securedList = new ArrayList<>();
         unsecuredList.forEach(user -> securedList.add(AuthenticationUtils.secureUserDataBeforeReturn(user)));
         return securedList;
+    }
+
+    @Override
+    public List<Map<String, Object>> getUserListWithAssignments(String id) throws Exception {
+        List<User> userList = getUserListForGroup(id);
+        List<Map<String, Object>> result = new ArrayList<>();
+        userList.forEach(user -> result.add(tryToGetUserWithAssignments(user.getId())));
+        return result;
+    }
+
+    private Map<String, Object> tryToGetUserWithAssignments(String id){
+        try{
+            return userManagementService.getUserWithAssignments(id);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new HashMap<>();
     }
 }

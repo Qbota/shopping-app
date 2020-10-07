@@ -23,6 +23,15 @@ public class AssignmentController {
         }
     }
 
+    @GetMapping("/group/{groupId}/assignment/all")
+    public ResponseEntity<Object> getAssignmentListForGroupAndItsMembers(@PathVariable String groupId){
+        try{
+            return new ResponseEntity<>(assignmentService.getAssignmentForGroupAndItsMembers(groupId), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping("/user/{userId}/assignment")
     public ResponseEntity<Object> getAssignmentListForUser(@PathVariable String userId){
         try{

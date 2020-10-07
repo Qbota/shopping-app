@@ -1,7 +1,7 @@
 package com.assignments.api.controller;
 
 import com.assignments.api.model.User;
-import com.assignments.api.service.UserManagementService;
+import com.assignments.api.service.user.UserManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

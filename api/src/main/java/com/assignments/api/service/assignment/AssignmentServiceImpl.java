@@ -1,4 +1,4 @@
-package com.assignments.api.service;
+package com.assignments.api.service.assignment;
 
 import com.assignments.api.model.Assignment;
 import com.assignments.api.model.Group;
@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class AssignmentService {
+public class AssignmentServiceImpl implements AssignmentService{
 
     @Autowired
     private GroupRepository groupRepository;
@@ -58,6 +58,13 @@ public class AssignmentService {
         groupRepository.findByIdAndIsActiveTrue(groupId).orElseThrow(Exception::new);
         Assignment assignment = assignmentRepository.findById(assignmentId).orElseThrow(Exception::new);
         assignment.setAssignee(groupId);
+        return assignmentRepository.save(assignment);
+    }
+
+    @Override
+    public Assignment editAssignment(Assignment assignment) throws Exception {
+        if(assignment == null)
+            throw new Exception("Assignment was null");
         return assignmentRepository.save(assignment);
     }
 }

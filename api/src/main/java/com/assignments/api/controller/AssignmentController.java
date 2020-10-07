@@ -1,7 +1,7 @@
 package com.assignments.api.controller;
 
 import com.assignments.api.model.Assignment;
-import com.assignments.api.service.AssignmentService;
+import com.assignments.api.service.assignment.AssignmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -65,6 +65,15 @@ public class AssignmentController {
     public ResponseEntity<Object> attachAssignmentToGroup(@PathVariable String groupId, @PathVariable String assignmentId){
         try{
             return new ResponseEntity<>(assignmentService.changeAssigneeToGroup(assignmentId, groupId), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/assignment")
+    public ResponseEntity<Object> editAssignment(@RequestBody Assignment assignment){
+        try{
+            return new ResponseEntity<>(assignmentService.editAssignment(assignment), HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

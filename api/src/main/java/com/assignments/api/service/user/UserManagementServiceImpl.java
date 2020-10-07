@@ -1,4 +1,4 @@
-package com.assignments.api.service;
+package com.assignments.api.service.user;
 
 import com.assignments.api.util.AuthenticationUtils;
 import com.assignments.api.util.Validators;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UserManagementService {
+public class UserManagementServiceImpl implements UserManagementService{
 
     @Autowired
     private UserRepository userRepository;

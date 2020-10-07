@@ -1,4 +1,4 @@
-package com.assignments.api.service;
+package com.assignments.api.service.group;
 
 import com.assignments.api.model.Group;
 import com.assignments.api.model.User;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class GroupManagementService {
+public class GroupManagementServiceImpl implements GroupManagementService{
 
 
     private static final int CODE_GENERATION_RETRY_COUNT = 5;

@@ -1,7 +1,9 @@
 <template>
 <v-content class="ml-7 mr-7">
   <v-row justify="center">
-    <h1>Group: {{myGroup.name}}</h1>
+    <h1>
+      {{myGroup.name}}
+    </h1>
   </v-row>
     <v-row justify="center">
       <template v-for="assignment in assignments">

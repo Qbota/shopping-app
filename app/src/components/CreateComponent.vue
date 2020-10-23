@@ -164,7 +164,6 @@
                     <v-card>
                       <v-card raised outlined>
                         <v-card-title>{{ assignment.name }}</v-card-title>
-                        <v-card-subtitle>Added by {{assignment.addedBy}}</v-card-subtitle>
                         <v-card-text>
                           <p>{{assignment.description}}</p>
                           <p>
@@ -174,7 +173,7 @@
                         </v-card-text>
                         <v-card-actions>
                           <v-spacer/>
-                          <v-btn>Register</v-btn>
+                          <v-btn @click="registerInApi()">Register</v-btn>
                         </v-card-actions>
                       </v-card>
                     </v-card>
@@ -203,7 +202,8 @@ name: "CreateComponent",
         begin: '',
         end: '',
         assignee: '',
-        addedBy: ''
+        addedBy: this.$store.state.user.login,
+        state: 'To Do'
       },
       valid: false,
       nameRules: [
@@ -234,7 +234,15 @@ name: "CreateComponent",
   },
   methods: {
     async registerInApi(){
-      console.log(this.assignment)
+      let url = 'http://localhost:8080/user/'
+      if(this.assigneeIsGroup()){
+        url = 'http://localhost:8080/group/'
+      }
+      axios.post(url + this.assignment.assignee + '/assignment', this.assignment, {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
+        .then(() => this.$router.push('/main'))
+    },
+    assigneeIsGroup(){
+      return this.assignment.assignee === this.myGroup.id;
     },
     async getMyGroupFromApi(){
       axios.get('http://localhost:8080/group/' + this.$store.state.user.groupId, {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})

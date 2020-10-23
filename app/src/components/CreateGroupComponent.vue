@@ -58,7 +58,7 @@ name: "CreateGroupComponent",
       axios.post('http://localhost:8080/group/' + this.code+'/user/' + this.$store.state.user.id, {}, {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
       .then((res) => {
         this.$store.commit('setUserGroupId', res.data.id)
-        this.$router.push('main/assignments')
+        this.$router.push('main')
       })
       .catch((err) => console.log(err))
     },

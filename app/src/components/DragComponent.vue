@@ -5,7 +5,7 @@
                 <v-row justify="center">
                   <v-list two-line elevation="1">
                     <v-subheader>
-                      Group tasks
+                      Not assigned
                     </v-subheader>
                     <draggable v-model="groupItems" :options="{group:'people'}" style="min-height: 10px" @change="addedToGroup($event)">
                       <template v-for="item in groupItems">
@@ -32,7 +32,7 @@
                   <v-col v-bind:key="member.id" cols="2">
                         <v-list two-line elevation="1">
                           <v-subheader>
-                            List of tasks to do by {{member.data.login}}
+                            Duties assigned to {{member.data.login}}
                           </v-subheader>
                           <draggable v-model="member.items" :options="{group:'people'}" style="min-height: 10px" @change="addedToUser($event, member)">
                             <template v-for="item in member.items">

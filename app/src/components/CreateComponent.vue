@@ -17,10 +17,10 @@
                     <v-text-field v-model="assignment.name" :rules="nameRules" label="Name" counter="15" required outlined rounded prepend-icon="mdi-account"/>
                   </v-row>
                   <v-row>
-                    <v-textarea v-model="assignment.description" outlined prepend-icon="mdi-account" label="Description" counter rounded></v-textarea>
+                    <v-textarea v-model="assignment.description" :rules="descriptionRules" outlined prepend-icon="mdi-account" label="Description" counter rounded></v-textarea>
                   </v-row>
                   <v-row>
-                    <v-text-field v-model="assignment.type" :rules="typeRules" label="Type" counter="15" required outlined rounded prepend-icon="mdi-account"/>
+                    <v-select v-model="assignment.type" :rules="typeRules" :items="types" label="Type" required outlined rounded prepend-icon="mdi-account"/>
                   </v-row>
                   <v-row>
                     <v-spacer/>
@@ -30,6 +30,9 @@
               </v-stepper-content>
               <v-stepper-content step="2">
                 <div class="px-12 pt-10 pb-5">
+                  <v-row justify="center">
+                    <h1>Choose assignee</h1>
+                  </v-row>
                   <v-row justify="center">
                     <v-radio-group v-model="assignment.assignee">
                       <v-radio :label="'My Group: '+myGroup.name" :value="myGroup.id"></v-radio>
@@ -56,7 +59,7 @@
                     >
                       <template v-slot:activator="{ on, attrs }">
                         <v-text-field
-                            v-model="range[0]"
+                            v-model="beginDate"
                             label="Begin date"
                             prepend-icon="mdi-calendar"
                             readonly
@@ -65,7 +68,7 @@
                         ></v-text-field>
                       </template>
                       <v-date-picker
-                          v-model="range[0]"
+                          v-model="beginDate"
                           @input="menuBeginDate = false"
                       ></v-date-picker>
                     </v-menu>
@@ -74,7 +77,7 @@
                         v-model="menuBeginTime"
                         :close-on-content-click="false"
                         :nudge-right="40"
-                        :return-value.sync="range[1]"
+                        :return-value.sync="beginTime"
                         transition="scale-transition"
                         offset-y
                         max-width="290px"
@@ -82,7 +85,7 @@
                     >
                       <template v-slot:activator="{ on, attrs }">
                         <v-text-field
-                            v-model="range[1]"
+                            v-model="beginTime"
                             label="Begin time"
                             prepend-icon="mdi-calendar"
                             readonly
@@ -92,10 +95,10 @@
                       </template>
                       <v-time-picker
                           v-if="menuBeginTime"
-                          v-model="range[1]"
+                          v-model="beginTime"
                           full-width
                           format="24hr"
-                          @click:minute="$refs.menuBeginTime.save(range[1])"
+                          @click:minute="$refs.menuBeginTime.save(beginTime)"
                       ></v-time-picker>
                     </v-menu>
                   </v-row>
@@ -110,7 +113,7 @@
                     >
                       <template v-slot:activator="{ on, attrs }">
                         <v-text-field
-                            v-model="range[2]"
+                            v-model="endDate"
                             label="End date"
                             prepend-icon="mdi-calendar"
                             readonly
@@ -119,7 +122,7 @@
                         ></v-text-field>
                       </template>
                       <v-date-picker
-                          v-model="range[2]"
+                          v-model="endDate"
                           @input="menuEndDate = false"
                       ></v-date-picker>
                     </v-menu>
@@ -128,7 +131,7 @@
                         v-model="menuEndTime"
                         :close-on-content-click="false"
                         :nudge-right="40"
-                        :return-value.sync="range[3]"
+                        :return-value.sync="endTime"
                         transition="scale-transition"
                         offset-y
                         max-width="290px"
@@ -136,7 +139,7 @@
                     >
                       <template v-slot:activator="{ on, attrs }">
                         <v-text-field
-                            v-model="range[3]"
+                            v-model="endTime"
                             label="End time"
                             prepend-icon="mdi-calendar"
                             readonly
@@ -146,10 +149,10 @@
                       </template>
                       <v-time-picker
                           v-if="menuEndTime"
-                          v-model="range[3]"
+                          v-model="endTime"
                           full-width
                           format="24hr"
-                          @click:minute="$refs.menuEndTime.save(range[3])"
+                          @click:minute="$refs.menuEndTime.save(endTime)"
                       ></v-time-picker>
                     </v-menu>
                   </v-row>
@@ -167,8 +170,8 @@
                         <v-card-text>
                           <p>{{assignment.description}}</p>
                           <p>
-                            Start: {{range[0]}} {{range[1]}} <br>
-                            End: {{range[2]}} {{range[3]}} <br>
+                            Start: {{beginDate}} {{beginTime}} <br>
+                            End: {{endDate}} {{endTime}} <br>
                           </p>
                         </v-card-text>
                         <v-card-actions>
@@ -205,6 +208,12 @@ name: "CreateComponent",
         addedBy: this.$store.state.user.login,
         state: 'To Do'
       },
+      types: [
+        'Shopping',
+        'Cleaning',
+        'School',
+        'General duties'
+      ],
       valid: false,
       nameRules: [
         v => !!v || 'Name is required',
@@ -219,7 +228,10 @@ name: "CreateComponent",
       ],
       dialog: false,
       stepper: 1,
-      range: [],
+      beginDate: null,
+      beginTime: '00:00',
+      endDate: null,
+      endTime: '00:00',
       myGroup: null,
       myGroupMembers: [],
       menuBeginDate: false,
@@ -247,18 +259,17 @@ name: "CreateComponent",
     async getMyGroupFromApi(){
       axios.get('http://localhost:8080/group/' + this.$store.state.user.groupId, {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
           .then(res => this.myGroup = res.data)
-      console.log(this.range[1])
     },
     async getMyGroupMembersFromApi(){
       axios.get('http://localhost:8080/group/' + this.$store.state.user.groupId + '/user', {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
           .then(res => this.myGroupMembers = res.data)
     },
     saveDates(){
-      this.assignment.begin = this.range[0] + 'T' + this.range[1]
-      this.assignment.end = this.range[2] + 'T' + this.range[3]
+      this.assignment.begin = this.beginDate + 'T' + this.beginTime
+      this.assignment.end = this.endDate + 'T' + this.endTime
     },
     ifTimesAreNotChosen(){
-      return this.range[0] === undefined || this.range[1] === undefined || this.range[2] === undefined || this.range[3] === undefined
+      return this.beginDate === undefined || this.beginTime === undefined || this.endDate === undefined || this.endTime === undefined
     }
   }
 }

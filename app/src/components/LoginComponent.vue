@@ -18,7 +18,7 @@
         </v-row>
       </v-card-actions>
       <v-snackbar v-model="snackBar" top>
-        Error during login action
+        Invalid login or password
         <v-btn text dark @click="snackBar = false">
           Close
         </v-btn>

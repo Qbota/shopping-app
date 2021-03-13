@@ -25,6 +25,7 @@ public class UserManagementServiceImpl implements UserManagementService{
 
     public User createUser(User user) throws Exception{
         Validators.insertUserValidator(user);
+        validateLoginExists(user);
         String salt = AuthenticationUtils.generateSalt();
         user.setSalt(salt);
 
@@ -33,6 +34,16 @@ public class UserManagementServiceImpl implements UserManagementService{
         user.setToken(AuthenticationUtils.generateTokenFor(user));
 
         return AuthenticationUtils.secureUserDataBeforeReturn(userRepository.insert(user));
+    }
+
+    private void validateLoginExists(User user) throws Exception {
+        if(userAlreadyExists(user.getLogin())){
+            throw new Exception("User already exists");
+        }
+    }
+
+    private boolean userAlreadyExists(String login) {
+        return userRepository.findByLoginAndIsActiveTrue(login).isPresent();
     }
 
     public List<User> getUserList(){

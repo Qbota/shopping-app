@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import config from "../config";
 import axios from 'axios'
     export default {
         name: "LoginComponent",
@@ -41,7 +42,7 @@ import axios from 'axios'
       },
         methods: {
             async loginAction() {
-              axios.post('http://localhost:8080/user/login', this.user)
+              axios.post(config.API_URL +'/user/login', this.user)
                   .then((res) => {
                     this.$store.commit('setUser', res.data)
                     console.log(res.data)

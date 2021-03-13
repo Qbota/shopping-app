@@ -35,7 +35,7 @@
                   </v-row>
                   <v-row justify="center">
                     <v-radio-group v-model="assignment.assignee">
-                      <v-radio :label="'My Group: '+myGroup.name" :value="myGroup.id"></v-radio>
+                      <v-radio label="Unassigned" :value="myGroup.id"></v-radio>
                       <template v-for="member in myGroupMembers">
                         <v-radio v-bind:key="member.id" :label="member.data.login" :value="member.data.id"></v-radio>
                       </template>
@@ -194,6 +194,7 @@
 
 <script>
 import axios from 'axios'
+import config from "../config";
 export default {
 name: "CreateComponent",
   data: function (){
@@ -246,9 +247,9 @@ name: "CreateComponent",
   },
   methods: {
     async registerInApi(){
-      let url = 'http://localhost:8080/user/'
+      let url = config.API_URL + '/user/'
       if(this.assigneeIsGroup()){
-        url = 'http://localhost:8080/group/'
+        url = config.API_URL + '/group/'
       }
       axios.post(url + this.assignment.assignee + '/assignment', this.assignment, {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
         .then(() => this.$router.push('/main'))
@@ -257,11 +258,11 @@ name: "CreateComponent",
       return this.assignment.assignee === this.myGroup.id;
     },
     async getMyGroupFromApi(){
-      axios.get('http://localhost:8080/group/' + this.$store.state.user.groupId, {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
+      axios.get(config.API_URL + '/group/' + this.$store.state.user.groupId, {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
           .then(res => this.myGroup = res.data)
     },
     async getMyGroupMembersFromApi(){
-      axios.get('http://localhost:8080/group/' + this.$store.state.user.groupId + '/user', {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
+      axios.get(config.API_URL + '/group/' + this.$store.state.user.groupId + '/user', {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
           .then(res => this.myGroupMembers = res.data)
     },
     saveDates(){

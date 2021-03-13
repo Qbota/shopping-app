@@ -43,7 +43,7 @@
 
 <script>
 import axios from "axios";
-
+import config from "../config";
 export default {
 name: "MyTasksComponent",
   created() {
@@ -59,14 +59,14 @@ name: "MyTasksComponent",
   },
   methods: {
     async getTasksFromApi(){
-      axios.get('http://localhost:8080/user/' + this.$store.state.user.id + '/assignment', {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
+      axios.get(config.API_URL + '/user/' + this.$store.state.user.id + '/assignment', {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
       .then(res => this.tasks = res.data)
     },
     async updateTaskState(){
       let task = this.chosen
       task.state = this.radioValue
       console.log(task)
-      await axios.put('http://localhost:8080/assignment', task,{headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
+      await axios.put(config.API_URL + '/assignment', task,{headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
       this.closeDialog()
     },
     formatDate(value){

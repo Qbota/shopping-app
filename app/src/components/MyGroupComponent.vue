@@ -5,6 +5,9 @@
       {{myGroup.name}}
     </h1>
   </v-row>
+  <v-row justify="center">
+      Invite code: {{myGroup.inviteCode}}
+  </v-row>
     <v-row justify="center">
       <template v-for="assignment in assignments">
         <v-col cols="3" v-bind:key="assignment.id">
@@ -32,7 +35,7 @@
 
 <script>
 import axios from 'axios';
-
+import config from "../config";
 export default {
 name: "MyGroupComponent",
   created() {
@@ -47,11 +50,11 @@ name: "MyGroupComponent",
   },
   methods: {
     async getMyGroupData(){
-      axios.get('http://localhost:8080/group/' + this.$store.state.user.groupId, {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
+      axios.get(config.API_URL + '/group/' + this.$store.state.user.groupId, {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
         .then(res => this.myGroup = res.data)
     },
     async getMyGroupAssignments(){
-      axios.get('http://localhost:8080/group/' + this.$store.state.user.groupId + '/assignment/all', {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
+      axios.get(config.API_URL + '/group/' + this.$store.state.user.groupId + '/assignment/all', {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
       .then(res => this.assignments = res.data)
     },
     formatDate(value){

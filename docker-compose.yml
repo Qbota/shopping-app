@@ -1,0 +1,25 @@
+version: '3.6'
+services:
+  mongo:
+    image: mongo
+    restart: always
+    ports: 
+      - 27017:27017
+  
+  back:
+    build: 
+      context: ./api
+      target:  finalApp
+    image: jcembrzynski/shopping-app:api_0.1
+    ports:
+      - 8080:8080
+    depends_on: 
+      - mongo
+
+  front:
+    build: ./app
+    image: jcembrzynski/shopping-app:app_0.1
+    ports:
+      - 4200:4200
+    depends_on: 
+      - back

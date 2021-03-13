@@ -35,6 +35,7 @@
 
 <script>
 import axios from 'axios'
+import config from "../config";
 export default {
 name: "CreateGroupComponent",
   data: function (){
@@ -55,7 +56,7 @@ name: "CreateGroupComponent",
   },
   methods: {
     assignToGroup(){
-      axios.post('http://localhost:8080/group/' + this.code+'/user/' + this.$store.state.user.id, {}, {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
+      axios.post(config.API_URL + '/group/' + this.code+'/user/' + this.$store.state.user.id, {}, {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
       .then((res) => {
         this.$store.commit('setUserGroupId', res.data.id)
         this.$router.push('main')
@@ -63,7 +64,7 @@ name: "CreateGroupComponent",
       .catch((err) => console.log(err))
     },
     creatGroup(){
-      axios.post('http://localhost:8080/group', {name: this.name}, {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
+      axios.post(config.API_URL + '/group', {name: this.name}, {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
       .then((res) => {
         console.log(res)
         this.$store.commit('setUserGroupId', res.data.id)

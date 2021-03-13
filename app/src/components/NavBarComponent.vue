@@ -9,7 +9,7 @@
         <v-btn class="mx-1" @click="redirectTo('/main/assignments')">Manage household duties</v-btn>
         <v-btn class="mx-1" @click="redirectTo('/main/group')">My Household</v-btn>
         <v-btn class="mx-1" @click="redirectTo('/main/tasks')">My Duties</v-btn>
-        <v-btn class="mx-1" @click="redirectTo('/main/tasks')">Ranking</v-btn>
+        <!-- <v-btn class="mx-1" @click="redirectTo('/main/tasks')">Ranking</v-btn> -->
         <v-btn class="mx-1" @click="logout()">Logout</v-btn>
     </v-app-bar>
 </template>

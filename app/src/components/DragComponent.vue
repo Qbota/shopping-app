@@ -44,11 +44,11 @@
                                     State: {{item.state}}
                                   </v-list-item-subtitle>
                                 </v-list-item-content>
-                                  <v-list-item-action>
+                                  <!-- <v-list-item-action>
                                     <v-btn icon @click="launchDialog(item)">
                                       <v-icon>mdi-pencil</v-icon>
                                     </v-btn>
-                                  </v-list-item-action>
+                                  </v-list-item-action> -->
                               </v-list-item>
                             </template>
                           </draggable>
@@ -81,7 +81,7 @@
 <script>
 import draggable from 'vuedraggable'
 import axios from "axios";
-
+import config from "../config";
 export default {
         components: {
           draggable
@@ -93,22 +93,22 @@ export default {
       methods: {
         async addedToUser(event, user){
           if(event.removed == null){
-            await axios.put('http://localhost:8080/assignment/'+ event.added.element.id+'/user/' + user.data.id,null, {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
+            await axios.put(config.API_URL + '/assignment/'+ event.added.element.id+'/user/' + user.data.id,null, {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
           }
         },
         async addedToGroup(event){
           if(event.removed == null){
-            await axios.put('http://localhost:8080/assignment/'+ event.added.element.id+'/group/' + this.$store.state.user.groupId,null, {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
+            await axios.put(config.API_URL + '/assignment/'+ event.added.element.id+'/group/' + this.$store.state.user.groupId,null, {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
 
           }
         },
         async getGroupMembersFromApi(){
-          axios.get('http://localhost:8080/group/' + this.$store.state.user.groupId + '/user', {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
+          axios.get(config.API_URL + '/group/' + this.$store.state.user.groupId + '/user', {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
               .then(res => this.members = res.data)
               .catch((err) => console.log(err))
         },
         async getGroupItemsFromDb(){
-          axios.get('http://localhost:8080/group/' + this.$store.state.user.groupId + '/assignment', {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
+          axios.get(config.API_URL + '/group/' + this.$store.state.user.groupId + '/assignment', {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
               .then((res) => this.groupItems = res.data)
               .catch((err) => console.log(err))
         },
@@ -130,7 +130,7 @@ export default {
           let task = this.chosen
           task.state = this.radioValue
           console.log(task)
-          await axios.put('http://localhost:8080/assignment', task,{headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
+          await axios.put(config.API_URL + '/assignment', task,{headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
           this.closeDialog()
         }
       },

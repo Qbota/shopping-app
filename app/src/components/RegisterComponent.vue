@@ -1,5 +1,5 @@
 <template>
-  <v-card raised outlined v-on:keyup.enter="registerInApi()">
+  <v-card raised outlined>
     <v-form v-model="valid" ref="form" class="px-12 pt-10 pb-5">
       <v-row>
         <v-text-field
@@ -45,6 +45,7 @@
         class="mb-2 mr-2 px-5"
         rounded
         :disabled="!valid"
+        :loading="loading"
         @click="registerInApi()"
         >Register</v-btn
       >
@@ -65,6 +66,7 @@ export default {
     return {
       valid: false,
       snackBar: false,
+      loading: false,
       user: {
         login: "",
         password: "",
@@ -87,13 +89,16 @@ export default {
   },
   methods: {
     async registerInApi() {
+      this.loading = true
       axios
         .post(config.API_URL + "/user/register", this.user)
         .then((res) => {
+          this.loading = false
           this.$store.commit("setUser", res.data);
           this.$router.push("main");
         })
         .catch(() => {
+          this.loading = false
           this.snackBar = true
         });
     },

@@ -10,7 +10,7 @@ services:
     build: 
       context: ./api
       target:  finalApp
-    image: jcembrzynski/shopping-app:api_0.1
+    image: jcembrzynski/shopping-app:api
     ports:
       - 8080:8080
     depends_on: 
@@ -18,7 +18,7 @@ services:
 
   front:
     build: ./app
-    image: jcembrzynski/shopping-app:app_0.1
+    image: jcembrzynski/shopping-app:app
     ports:
       - 4200:4200
     depends_on: 

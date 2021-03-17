@@ -2,9 +2,6 @@ version: '3.6'
 services:
   mongo:
     image: mongo
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=mongouser
-      - MONGO_INITDB_ROOT_PASSWORD=mongo.123
     ports: 
       - 27017:27017
   

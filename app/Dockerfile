@@ -15,7 +15,7 @@ RUN yarn install
 # copy project files and folders to the current working directory (i.e. 'app' folder)
 COPY . .
 
-RUN sed -i 's/localhost:8080/185.92.220.215:8080/g' src/config.js
+RUN sed -i 's/localhost:8080/140.82.37.246:8080/g' src/config.js
 
 # build app for production with minification
 RUN yarn build

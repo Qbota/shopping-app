@@ -2,14 +2,13 @@ version: '3.6'
 services:
   mongo:
     image: mongo
-    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongouser
+      - MONGO_INITDB_ROOT_PASSWORD=mongo.123
     ports: 
       - 27017:27017
   
   back:
-    build: 
-      context: ./api
-      target:  finalApp
     image: jcembrzynski/shopping-app:api
     ports:
       - 8080:8080
@@ -17,7 +16,6 @@ services:
       - mongo
 
   front:
-    build: ./app
     image: jcembrzynski/shopping-app:app
     ports:
       - 4200:4200

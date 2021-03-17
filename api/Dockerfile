@@ -16,4 +16,4 @@ COPY --from=builder /home/gradle/src/build/libs/api-0.0.1.jar /app
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "/app/api-0.0.1.jar", "--spring.data.mongodb.host=mongo","--spring.data.mongodb.username=mongouser","--spring.data.mongodb.password=mongo.123"]
+ENTRYPOINT ["java", "-jar", "/app/api-0.0.1.jar", "--spring.data.mongodb.host=mongo",]

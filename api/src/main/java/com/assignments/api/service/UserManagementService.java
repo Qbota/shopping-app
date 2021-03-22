@@ -1,5 +1,8 @@
-package com.assignments.api.service.user;
+package com.assignments.api.service;
 
+import com.assignments.api.error.exception.AuthenticationException;
+import com.assignments.api.error.exception.DocumentInvalidException;
+import com.assignments.api.error.exception.DocumentNotFoundException;
 import com.assignments.api.model.Assignment;
 import com.assignments.api.repository.AssignmentRepository;
 import com.assignments.api.util.AuthenticationUtils;
@@ -15,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class UserManagementServiceImpl implements UserManagementService{
+public class UserManagementService {
 
     @Autowired
     private UserRepository userRepository;
@@ -23,7 +26,7 @@ public class UserManagementServiceImpl implements UserManagementService{
     @Autowired
     private AssignmentRepository assignmentRepository;
 
-    public User createUser(User user) throws Exception{
+    public User createUser(User user){
         Validators.insertUserValidator(user);
         validateLoginExists(user);
         String salt = AuthenticationUtils.generateSalt();
@@ -36,9 +39,9 @@ public class UserManagementServiceImpl implements UserManagementService{
         return AuthenticationUtils.secureUserDataBeforeReturn(userRepository.insert(user));
     }
 
-    private void validateLoginExists(User user) throws Exception {
+    private void validateLoginExists(User user) {
         if(userAlreadyExists(user.getLogin())){
-            throw new Exception("User already exists");
+            throw new DocumentInvalidException("User already exists");
         }
     }
 
@@ -50,18 +53,18 @@ public class UserManagementServiceImpl implements UserManagementService{
         return userRepository.findAll();
     }
 
-    public User changeStatusOfUser(boolean status, String id) throws Exception {
-        User user = userRepository.findById(id).orElseThrow(Exception::new);
+    public User changeStatusOfUser(boolean status, String id) {
+        User user = userRepository.findById(id).orElseThrow(DocumentNotFoundException::new);
         user.setActive(status);
         return userRepository.save(user);
     }
 
-    public User authenticate(User user) throws Exception{
+    public User authenticate(User user) {
         Validators.authenticateUserValidator(user);
-        User repoUser = userRepository.findByLoginAndIsActiveTrue(user.getLogin()).orElseThrow(Exception::new);
+        User repoUser = userRepository.findByLoginAndIsActiveTrue(user.getLogin()).orElseThrow(DocumentNotFoundException::new);
 
         if(!passwordsAreMatching(user, repoUser))
-            throw new Exception("Passwords not matching");
+            throw new AuthenticationException("Passwords not matching");
 
         String token = AuthenticationUtils.generateTokenFor(repoUser);
         repoUser.setToken(token);
@@ -74,10 +77,9 @@ public class UserManagementServiceImpl implements UserManagementService{
         return inputPasswordHash.equals(repoPasswordHash);
     }
 
-    @Override
-    public Map<String, Object> getUserWithAssignments(String id) throws Exception {
+    public Map<String, Object> getUserWithAssignments(String id){
         Map<String, Object> result = new HashMap<>();
-        User user = userRepository.findById(id).orElseThrow(Exception::new);
+        User user = userRepository.findById(id).orElseThrow(DocumentNotFoundException::new);
         result.put("data", user);
         List<Assignment> assignmentList = assignmentRepository.findByAssignee(user.getId()).orElse(new ArrayList<>());
         result.put("items", assignmentList);

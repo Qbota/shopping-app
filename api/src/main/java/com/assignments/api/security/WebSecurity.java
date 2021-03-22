@@ -24,11 +24,11 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().configurationSource(configurationSource())
                 .and().csrf().disable().authorizeRequests()
-                .antMatchers("/user/login").permitAll()
-                .antMatchers("/user/register").permitAll()
-                .anyRequest().authenticated()
+                //.antMatchers("/user/login").permitAll()
+                //.antMatchers("/user/register").permitAll()
+                .anyRequest().permitAll()
                 .and()
-                .addFilter(new JWTAuthorizationFilter(authenticationManager()))
+                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 

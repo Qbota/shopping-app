@@ -3,6 +3,10 @@ package com.assignments.api.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
 
 @Document
 public class Group {
@@ -12,6 +16,7 @@ public class Group {
     private String name;
     private String inviteCode;
     private boolean isActive = true;
+    List<Product> shoppingList = new ArrayList<>();
 
     public Group() {
     }
@@ -48,4 +53,19 @@ public class Group {
         isActive = active;
     }
 
+    public List<Product> getShoppingList() {
+        return shoppingList;
+    }
+
+    public void setShoppingList(List<Product> shoppingList) {
+        this.shoppingList = shoppingList;
+    }
+
+    public void addNewProduct(Product product){
+        this.shoppingList.add(product);
+    }
+
+    public void removeProduct(Product product){
+        this.shoppingList.remove(product);
+    }
 }

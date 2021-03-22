@@ -16,11 +16,12 @@ public class Assignment {
     private Date begin;
     private Date end;
     private String addedBy;
-    private String state;
+    private State state;
     private String assignee;
+    private Integer points = 0;
 
     public Assignment(){
-
+        //Should be empty
     }
 
     public Assignment(Assignment assignment) {
@@ -33,6 +34,7 @@ public class Assignment {
         this.addedBy = assignment.getAddedBy();
         this.state = assignment.getState();
         this.assignee = assignment.getAssignee();
+        this.points = assignment.getPoints();
     }
 
     public String getName() {
@@ -83,11 +85,11 @@ public class Assignment {
         this.addedBy = addedBy;
     }
 
-    public String getState() {
+    public State getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(State state) {
         this.state = state;
     }
 
@@ -105,5 +107,13 @@ public class Assignment {
 
     public void setAssignee(String assignee) {
         this.assignee = assignee;
+    }
+
+    public Integer getPoints() {
+        return points;
+    }
+
+    public void setPoints(Integer points) {
+        this.points = points;
     }
 }

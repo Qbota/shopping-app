@@ -95,7 +95,7 @@ export default {
         .then((res) => {
           this.loading = false
           this.$store.commit("setUser", res.data);
-          this.$router.push("main/assignments");
+          this.$router.push({name: 'assignments'});
         })
         .catch(() => {
           this.loading = false

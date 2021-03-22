@@ -35,7 +35,7 @@ Vue.use(VueRouter)
       else next()
     },
     children: [
-      {path: 'assignments', component: DragComponent},
+      {path: 'assignments', name: 'assignments', component: DragComponent},
       {path: 'group', component: MyGroupComponent},
       {path: 'create', component: CreateComponent},
       {path: 'tasks', component: MyTasksComponent}

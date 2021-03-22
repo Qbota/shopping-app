@@ -1,5 +1,6 @@
 package com.assignments.api.security;
 
+import static com.assignments.api.security.SecurityConstants.*;
 import io.jsonwebtoken.*;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,13 +16,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.security.Key;
+import java.util.List;
 
-public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
+public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
     private static SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS512;
     private static byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(SecurityConstants.SECRET);
     private static Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
 
-    public JWTAuthorizationFilter(AuthenticationManager authenticationManager) {
+    public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
     }
 
@@ -55,8 +57,8 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
                 e.printStackTrace();
                 return null;
             }
-
-            return new UsernamePasswordAuthenticationToken(null, null, null);
+            Claims claims = jws.getBody();
+            return new UsernamePasswordAuthenticationToken(claims, null, null);
         }
         return null;
     }

@@ -5,6 +5,7 @@ import com.assignments.api.error.exception.DocumentNotFoundException;
 import com.assignments.api.error.exception.UserAlreadyInGroupException;
 import com.assignments.api.model.Assignment;
 import com.assignments.api.model.Group;
+import com.assignments.api.model.RankingItemDTO;
 import com.assignments.api.model.User;
 import com.assignments.api.repository.AssignmentRepository;
 import com.assignments.api.repository.GroupRepository;
@@ -96,13 +97,14 @@ public class GroupManagementService {
         return result;
     }
 
-    public Map<String, Integer> getRanking(String id) {
+    public List<RankingItemDTO> getRanking(String id) {
         return getUserListForGroup(id).stream()
-        .collect(Collectors.toMap(
-                User::getLogin,
-                user -> assignmentRepository.findByAssignee(user.getId()).orElse(Collections.emptyList())
-                        .stream().mapToInt(Assignment::getPoints).reduce(0, Integer::sum)
-        ));
+                .map(user -> new RankingItemDTO(
+                        user.getLogin(),
+                        assignmentRepository.findByAssignee(user.getId()).orElse(Collections.emptyList())
+                                .stream().mapToInt(Assignment::getPoints).reduce(0, Integer::sum))
+                ).sorted(Comparator.comparingInt(RankingItemDTO::getPoints).reversed())
+                .collect(Collectors.toList());
     }
 
     private Map<String, Object> tryToGetUserWithAssignments(String id) {

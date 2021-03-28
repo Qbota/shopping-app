@@ -10,6 +10,10 @@ import java.security.InvalidParameterException;
 
 public class Validators {
 
+    private Validators(){
+        //Should be empty
+    }
+
     public static void insertUserValidator(User user) {
         if (user == null)
             throw new DocumentInvalidException("User was null");

@@ -6,10 +6,12 @@ import LandingView from "@/views/LandingView";
 import LoginComponent from "@/components/LoginComponent";
 import RegisterComponent from "@/components/RegisterComponent";
 import CreateGroupComponent from "@/components/CreateGroupComponent";
-import store from '@/store/index'
+// import store from '@/store/index'
 import MyTasksComponent from "@/components/MyTasksComponent";
 import MyGroupComponent from "@/components/MyGroupComponent";
 import CreateComponent from "@/components/CreateComponent";
+import RankingComponent from "@/components/RankingComponent";
+import ShoppingListComponent from "@/components/ShoppingListComponent";
 
 Vue.use(VueRouter)
 
@@ -29,16 +31,18 @@ Vue.use(VueRouter)
     path: '/main',
     name: 'Main',
     component: MainView,
-    beforeEnter: (to, from, next) => {
-      if(store.state.user == null) next({name: 'Login'})
-      else if(store.state.user.groupId == null) next({name: 'CreateGroup'})
-      else next()
-    },
+    // beforeEnter: (to, from, next) => {
+    //   if(store.state.user == null) next({name: 'Login'})
+    //   else if(store.state.user.groupId == null) next({name: 'CreateGroup'})
+    //   else next()
+    // },
     children: [
       {path: 'assignments', name: 'assignments', component: DragComponent},
       {path: 'group', component: MyGroupComponent},
       {path: 'create', component: CreateComponent},
-      {path: 'tasks', component: MyTasksComponent}
+      {path: 'tasks', component: MyTasksComponent},
+      {path: 'ranking', component: RankingComponent},
+      {path: 'list', component: ShoppingListComponent}
     ]
   }
 ]

@@ -1,26 +1,27 @@
 package com.assignments.api.util;
 
 import com.assignments.api.model.User;
-
-import java.nio.charset.StandardCharsets;
-import java.security.Key;
-import java.security.SecureRandom;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-
 import com.assignments.api.security.SecurityConstants;
 import com.google.common.hash.Hashing;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
-import javax.xml.bind.DatatypeConverter;
 import javax.crypto.spec.SecretKeySpec;
+import javax.xml.bind.DatatypeConverter;
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
+import java.security.SecureRandom;
+import java.util.Date;
+import java.util.HashMap;
 
 import static com.assignments.api.security.SecurityConstants.*;
 
-public class AuthenticationUtils {
+public final class AuthenticationUtils {
+
+    private AuthenticationUtils(){
+        //Empty
+    }
 
     private static final int SECOND = 1000;
     private static final int MINUTE = SECOND * 60;

@@ -27,7 +27,7 @@
     </v-form>
     <v-card-actions>
       <v-row justify="center">
-        <v-btn @click="$router.push('register')">Register</v-btn>
+        <v-btn class="mb-4" @click="$router.push('register')">Register</v-btn>
       </v-row>
     </v-card-actions>
     <v-snackbar v-model="snackBar" top>

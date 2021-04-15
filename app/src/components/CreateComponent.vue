@@ -218,14 +218,14 @@ name: "CreateComponent",
       valid: false,
       nameRules: [
         v => !!v || 'Name is required',
-        v => (v && v.length <= 30) || 'Name must be less than 15 characters'
+        v => (v && v.length <= 30) || 'Name must be less than 30 characters'
       ],
       descriptionRules: [
         v => !!v || 'Description is required'
       ],
       typeRules: [
         v => !!v || 'Type is required',
-        v => (v && v.length <= 30) || 'Type must be less than 15 characters'
+        v => (v && v.length <= 30) || 'Type must be less than 30 characters'
       ],
       dialog: false,
       stepper: 1,

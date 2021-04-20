@@ -1,147 +1,262 @@
 <template>
-    <v-app id="inspire">
-        <v-content>
-            <v-container fluid>
-                <v-row justify="center">
-                  <v-list two-line elevation="1">
-                    <v-subheader>
-                      Not assigned
-                    </v-subheader>
-                    <draggable v-model="groupItems" :options="{group:'people'}" style="min-height: 10px" @change="addedToGroup($event)">
-                      <template v-for="item in groupItems">
-                        <v-list-item :key="item.id" v-if="item.state !== 'Done'">
-                          <v-list-item-content>
-                            <v-list-item-title>{{item.name}}</v-list-item-title>
-                            <v-list-item-subtitle>{{item.description}} <br>
-                              Deadline: {{formatDate(item.end)}} <br>
-                              State: {{item.state}}
-                            </v-list-item-subtitle>
-                          </v-list-item-content>
-                          <v-list-item-action>
-                            <v-btn icon @click="launchDialog(item)">
-                              <v-icon>mdi-pencil</v-icon>
-                            </v-btn>
-                          </v-list-item-action>
-                        </v-list-item>
-                      </template>
-                    </draggable>
-                  </v-list>
-                </v-row>
-                <v-row justify="center">
-                  <template v-for="member in members">
-                  <v-col v-bind:key="member.id" cols="2">
-                        <v-list two-line elevation="1">
-                          <v-subheader>
-                            Duties assigned to {{member.data.login}}
-                          </v-subheader>
-                          <draggable v-model="member.items" :options="{group:'people'}" style="min-height: 10px" @change="addedToUser($event, member)">
-                            <template v-for="item in member.items">
-                              <v-list-item :key="item.id" v-if="item.state !== 'Done'">
-                                <v-list-item-content>
-                                  <v-list-item-title>{{item.name}}</v-list-item-title>
-                                  <v-list-item-subtitle>{{item.description}} <br>
-                                    Deadline: {{formatDate(item.end)}} <br>
-                                    State: {{item.state}}
-                                  </v-list-item-subtitle>
-                                </v-list-item-content>
-                                  <!-- <v-list-item-action>
-                                    <v-btn icon @click="launchDialog(item)">
-                                      <v-icon>mdi-pencil</v-icon>
-                                    </v-btn>
-                                  </v-list-item-action> -->
-                              </v-list-item>
-                            </template>
-                          </draggable>
-                        </v-list>
-                    </v-col>
-                  </template>
-                </v-row>
-            </v-container>
-          <v-dialog v-model="dialog" scrollable max-width="300pt">
-            <v-card>
-              <v-card-title>Choose state</v-card-title>
-              <v-card-text>
-                <v-radio-group v-model="radioValue">
-                  <v-radio label="To Do" value="To Do"></v-radio>
-                  <v-radio label="In Progress" value="In Progress"></v-radio>
-                  <v-radio label="Done" value="Done"></v-radio>
-                </v-radio-group>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer/>
-                <v-btn @click="updateTaskState()">Confirm</v-btn>
-                <v-btn @click="closeDialog()">Cancel</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </v-content>
-    </v-app>
+  <v-app id="inspire">
+    <v-content>
+      <v-container fluid>
+        <v-row justify="center">
+          <v-list two-line elevation="1">
+            <v-subheader> Not assigned </v-subheader>
+            <draggable
+              v-model="groupItems"
+              :options="{ group: 'people' }"
+              style="min-height: 10px"
+              @change="addedToGroup($event)"
+            >
+              <template v-for="item in groupItems">
+                <v-card
+                  width="150pt"
+                  raised
+                  outlined
+                  v-bind:key="item.id"
+                  class="mx-3 mb-3"
+                  v-if="item.state.toLowerCase() !== 'done'"
+                >
+                  <v-card-title
+                    @click="showDetails(item)"
+                    style="cursor: pointer"
+                  >
+                    {{ item.name }}
+                    <v-spacer />
+                    {{ item.points }}
+                  </v-card-title>
+                  <v-card-subtitle>{{ item.type }}</v-card-subtitle>
+                  <v-card-text>
+                    <p>
+                      End: {{ formatDate(item.end) }}<br />
+                      Current state: {{ item.state }}
+                      <v-btn icon @click="launchchangeStateDialog(item)">
+                        <v-icon>mdi-pencil</v-icon>
+                      </v-btn>
+                    </p>
+                  </v-card-text>
+                </v-card>
+              </template>
+            </draggable>
+          </v-list>
+        </v-row>
+        <v-row justify="center">
+          <template v-for="member in members">
+            <v-list
+              class="mx-3 my-3"
+              v-bind:key="member.id"
+              two-line
+              elevation="1"
+              width=""
+            >
+              <v-subheader>
+                Duties assigned to {{ member.data.login }}
+              </v-subheader>
+              <draggable
+                v-model="member.items"
+                :options="{ group: 'people' }"
+                style="min-height: 10px"
+                @change="addedToUser($event, member)"
+              >
+                <template v-for="item in member.items">
+                  <v-card
+                    width="150pt"
+                    raised
+                    outlined
+                    v-bind:key="item.id"
+                    class="mx-3 mb-3"
+                    v-if="item.state.toLowerCase() !== 'done'"
+                  >
+                    <v-card-title
+                      @click="showDetails(item)"
+                      style="cursor: pointer"
+                    >
+                      {{ item.name }}
+                      <v-spacer />
+                      {{ item.points }}
+                    </v-card-title>
+                    <v-card-subtitle>{{ item.type }}</v-card-subtitle>
+                    <v-card-text>
+                      <p>
+                        End: {{ formatDate(item.end) }}<br />
+                        Current state: {{ item.state }}
+                      </p>
+                    </v-card-text>
+                  </v-card>
+                </template>
+              </draggable>
+            </v-list>
+          </template>
+        </v-row>
+      </v-container>
+      <v-dialog v-model="changeStateDialog" scrollable max-width="300pt">
+        <v-card>
+          <v-card-title>Choose state</v-card-title>
+          <v-card-text>
+            <v-radio-group v-model="radioValue">
+              <v-radio label="To Do" value="To Do"></v-radio>
+              <v-radio label="In Progress" value="In Progress"></v-radio>
+              <v-radio label="Done" value="Done"></v-radio>
+            </v-radio-group>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer />
+            <v-btn @click="updateTaskState()">Confirm</v-btn>
+            <v-btn @click="closechangeStateDialog()">Cancel</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="detailsDialog" width="300pt">
+        <v-card>
+          <div v-if="detailedItem">
+            <v-card-title>
+              {{ detailedItem.name }}
+              <v-spacer />
+              {{ detailedItem.points }}
+            </v-card-title>
+            <v-card-subtitle>{{ detailedItem.type }}</v-card-subtitle>
+            <v-card-text>
+              <p>
+                {{ detailedItem.description }}
+              </p>
+              <p>
+                Added by: {{ detailedItem.addedBy }}<br />
+                Begin: {{ formatDate(detailedItem.begin) }}<br />
+                End: {{ formatDate(detailedItem.end) }}<br />
+                Current state: {{ detailedItem.state }}
+              </p>
+            </v-card-text>
+          </div>
+          <v-card-actions>
+            <v-spacer/>
+            <v-btn @click="closeDetails()"> Close </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
-import draggable from 'vuedraggable'
+import draggable from "vuedraggable";
 import axios from "axios";
 import config from "../config";
 export default {
-        components: {
-          draggable
-        },
-      created() {
-        this.getGroupItemsFromDb()
-        this.getGroupMembersFromApi()
-      },
-      methods: {
-        async addedToUser(event, user){
-          if(event.removed == null){
-            await axios.put(config.API_URL + '/assignment/'+ event.added.element.id+'/user/' + user.data.id,null, {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
+  components: {
+    draggable,
+  },
+  created() {
+    this.getGroupItemsFromDb();
+    this.getGroupMembersFromApi();
+  },
+  methods: {
+    async addedToUser(event, user) {
+      if (event.removed == null) {
+        await axios.put(
+          config.API_URL +
+            "/assignment/" +
+            event.added.element.id +
+            "/user/" +
+            user.data.id,
+          null,
+          {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.user.token,
+            },
           }
-        },
-        async addedToGroup(event){
-          if(event.removed == null){
-            await axios.put(config.API_URL + '/assignment/'+ event.added.element.id+'/group/' + this.$store.state.user.groupId,null, {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
-
+        );
+      }
+    },
+    async addedToGroup(event) {
+      if (event.removed == null) {
+        await axios.put(
+          config.API_URL +
+            "/assignment/" +
+            event.added.element.id +
+            "/group/" +
+            this.$store.state.user.groupId,
+          null,
+          {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.user.token,
+            },
           }
-        },
-        async getGroupMembersFromApi(){
-          axios.get(config.API_URL + '/group/' + this.$store.state.user.groupId + '/user', {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
-              .then(res => this.members = res.data)
-              .catch((err) => console.log(err))
-        },
-        async getGroupItemsFromDb(){
-          axios.get(config.API_URL + '/group/' + this.$store.state.user.groupId + '/assignment', {headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
-              .then((res) => this.groupItems = res.data)
-              .catch((err) => console.log(err))
-        },
-        formatDate(value){
-          let split = value.split('T')
-          let date = split[0]
-          let time = split[1].substring(0,5)
-          return date + ' ' +time
-        },
-        launchDialog(task){
-          this.chosen = task
-          this.dialog = true
-        },
-        closeDialog(){
-          this.dialog = false
-          this.chosen = null
-        },
-        async updateTaskState(){
-          let task = this.chosen
-          task.state = this.radioValue
-          console.log(task)
-          await axios.put(config.API_URL + '/assignment', task,{headers: {'Authorization': 'Bearer ' + this.$store.state.user.token}})
-          this.closeDialog()
-        }
-      },
-        data: function (){
-          return {
-            members: [],
-            groupItems: [],
-            dialog: false,
-            chosen: null,
-            radioValue: null
+        );
+      }
+    },
+    async getGroupMembersFromApi() {
+      axios
+        .get(
+          config.API_URL + "/group/" + this.$store.state.user.groupId + "/user",
+          {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.user.token,
+            },
           }
-        },
-    }
+        )
+        .then((res) => (this.members = res.data))
+        .catch((err) => console.log(err));
+    },
+    async getGroupItemsFromDb() {
+      axios
+        .get(
+          config.API_URL +
+            "/group/" +
+            this.$store.state.user.groupId +
+            "/assignment",
+          {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.user.token,
+            },
+          }
+        )
+        .then((res) => (this.groupItems = res.data))
+        .catch((err) => console.log(err));
+    },
+    showDetails(item) {
+      this.detailsDialog = true;
+      this.detailedItem = item;
+    },
+    closeDetails() {
+      this.detailsDialog = false;
+    },
+    formatDate(value) {
+      let split = value.split("T");
+      let date = split[0];
+      let time = split[1].substring(0, 5);
+      return date + " " + time;
+    },
+    launchchangeStateDialog(task) {
+      this.chosen = task;
+      this.changeStateDialog = true;
+    },
+    closechangeStateDialog() {
+      this.changeStateDialog = false;
+      this.chosen = null;
+    },
+    async updateTaskState() {
+      let task = this.chosen;
+      task.state = this.radioValue;
+      console.log(task);
+      await axios.put(config.API_URL + "/assignment", task, {
+        headers: { Authorization: "Bearer " + this.$store.state.user.token },
+      });
+      this.closechangeStateDialog();
+    },
+  },
+  data: function () {
+    return {
+      members: [],
+      groupItems: [],
+      changeStateDialog: false,
+      detailsDialog: false,
+      detailedItem: null,
+      chosen: null,
+      radioValue: null,
+    };
+  },
+};
 </script>

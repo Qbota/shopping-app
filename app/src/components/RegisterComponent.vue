@@ -8,9 +8,7 @@
           label="Login"
           counter="15"
           required
-          outlined
-          rounded
-          prepend-icon="mdi-account"
+          prepend-icon="fas fa-user"
         />
       </v-row>
       <v-row>
@@ -21,9 +19,7 @@
           counter="15"
           type="password"
           required
-          outlined
-          rounded
-          prepend-icon="mdi-account-key"
+          prepend-icon="fas fa-user-shield"
         />
       </v-row>
       <v-row>
@@ -34,16 +30,13 @@
           counter="15"
           type="password"
           required
-          outlined
-          rounded
-          prepend-icon="mdi-account-key"
+          prepend-icon="fas fa-user-shield"
         />
       </v-row>
     </v-form>
     <v-card-actions>
       <v-spacer /><v-btn
         class="mb-2 mr-2 px-5"
-        rounded
         :disabled="!valid"
         :loading="loading"
         @click="registerInApi()"

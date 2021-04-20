@@ -4,25 +4,21 @@
       <v-row>
         <v-text-field
           v-model="user.login"
-          rounded
           placeholder="Login"
-          prepend-icon="mdi-lock"
-          outlined
+          prepend-icon="fas fa-user"
         />
       </v-row>
       <v-row>
         <v-text-field
           v-model="user.password"
-          rounded
           placeholder="Password"
           type="password"
-          prepend-icon="mdi-lock"
-          outlined
+          prepend-icon="fas fa-user-shield"
         />
       </v-row>
       <v-row>
         <v-spacer />
-        <v-btn @click="loginAction()" rounded>Login</v-btn>
+        <v-btn @click="loginAction()">Login</v-btn>
       </v-row>
     </v-form>
     <v-card-actions>

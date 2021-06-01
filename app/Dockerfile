@@ -15,10 +15,10 @@ RUN yarn install
 # copy project files and folders to the current working directory (i.e. 'app' folder)
 COPY . .
 
-RUN sed -i 's/localhost:8080/140.82.37.246:8080/g' src/config.js
+RUN sed -i 's,http://localhost:8080,https://house-todos-api.herokuapp.com,g' src/config.js
 
 # build app for production with minification
 RUN yarn build
 
 EXPOSE 4200
-CMD [ "http-server", "dist", "-p4200" ]
+CMD http-server dist -p$PORT

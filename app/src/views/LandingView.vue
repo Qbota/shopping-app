@@ -13,6 +13,9 @@
         <router-view />
       </v-row>
     </v-container>
+    <v-footer absolute>
+      Version 0.2
+    </v-footer>
   </v-content>
 </template>
 

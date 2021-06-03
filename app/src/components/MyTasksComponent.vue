@@ -4,6 +4,9 @@
       <div class="filter mx-2">
         <v-select
           v-model="typeFilter"
+          color="accent"
+          item-color="accent"
+          class="accent--text"
           label="type"
           :items="tasks.map((x) => x.type).concat('Any')"
         />
@@ -11,6 +14,9 @@
       <div class="filter mx-2">
         <v-select
           v-model="stateFilter"
+          color="accent"
+          item-color="accent"
+              class="accent--text"
           label="state"
           :items="tasks.map((x) => x.state).concat('Any')"
         />
@@ -21,6 +27,8 @@
           :close-on-content-click="false"
           :nudge-right="40"
           transition="scale-transition"
+          color="accent"
+              class="accent--text"
           offset-y
           min-width="290px"
         >
@@ -30,12 +38,16 @@
               label="Begin date"
               prepend-icon="mdi-calendar"
               readonly
+              color="accent"
+              item-color="accent"
+              class="accent--text"
               v-bind="attrs"
               v-on="on"
             ></v-text-field>
           </template>
           <v-date-picker
             v-model="beginDateFilter"
+            color="secondary"
             @input="menuBeginDate = false"
           ></v-date-picker>
         </v-menu>
@@ -52,28 +64,33 @@
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
               v-model="endDateFilter"
-              label="Begin date"
+              label="End date"
               prepend-icon="mdi-calendar"
               readonly
+              color="accent"
+              item-color="accent"
+              class="accent--text"
               v-bind="attrs"
               v-on="on"
             ></v-text-field>
           </template>
           <v-date-picker
             v-model="endDateFilter"
+            color="secondary"
             @input="menuEndDate = false"
           ></v-date-picker>
         </v-menu>
       </div>
       <div class="mt-3 mx-2">
-        <v-btn @click="resetDatesFilters()">Any dates</v-btn>
+        <v-btn color="primary" class="accent--text" @click="resetDatesFilters()">Any dates</v-btn>
       </div>
     </v-row>
     <v-row justify="center">
       <template v-for="task in getFilteredTasks()">
         <v-card
-          class="mx-3 mb-3"
+          class="mx-3 mb-3 accent--text"
           width="200pt"
+          color="primary"
           raised
           outlined
           v-bind:key="task.id"
@@ -93,7 +110,7 @@
             </p>
           </v-card-text>
           <v-card-actions>
-            <v-spacer /><v-btn text @click="launchDialog(task)"
+            <v-spacer /><v-btn text class="accent--text" @click="launchDialog(task)"
               >Change state</v-btn
             >
           </v-card-actions>
@@ -101,19 +118,19 @@
       </template>
     </v-row>
     <v-dialog v-model="dialog" scrollable max-width="300pt">
-      <v-card>
+      <v-card color="primary" class="accent--text">
         <v-card-title>Choose state</v-card-title>
         <v-card-text>
           <v-radio-group v-model="radioValue">
-            <v-radio label="To Do" value="To Do"></v-radio>
-            <v-radio label="In Progress" value="In Progress"></v-radio>
-            <v-radio label="Done" value="Done"></v-radio>
+            <v-radio color="accent" label="To Do" value="To Do"></v-radio>
+            <v-radio color="accent" label="In Progress" value="In Progress"></v-radio>
+            <v-radio color="accent" label="Done" value="Done"></v-radio>
           </v-radio-group>
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn @click="updateTaskState()">Confirm</v-btn>
-          <v-btn @click="closeDialog()">Cancel</v-btn>
+          <v-btn color="primary" class="accent--text" @click="updateTaskState()">Confirm</v-btn>
+          <v-btn color="primary" class="accent--text" @click="closeDialog()">Cancel</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

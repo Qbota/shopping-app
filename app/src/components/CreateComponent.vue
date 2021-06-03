@@ -5,16 +5,16 @@
         <v-card raised outlined v-on:keyup.enter="registerInApi()">
           <v-stepper v-model="stepper">
             <v-stepper-header>
-              <v-stepper-step :complete="stepper > 1" step="1"
+              <v-stepper-step color="secondary" :complete="stepper > 1" step="1"
                 >General information</v-stepper-step
               >
-              <v-stepper-step :complete="stepper > 2" step="2"
+              <v-stepper-step color="secondary" :complete="stepper > 2" step="2"
                 >Assignee</v-stepper-step
               >
-              <v-stepper-step :complete="stepper > 3" step="3"
+              <v-stepper-step color="secondary" :complete="stepper > 3" step="3"
                 >Time box</v-stepper-step
               >
-              <v-stepper-step :complete="stepper > 4" step="4"
+              <v-stepper-step color="secondary" :complete="stepper > 4" step="4"
                 >Confirm</v-stepper-step
               >
             </v-stepper-header>
@@ -29,6 +29,8 @@
                         <v-row>
                           <v-text-field
                             v-model="assignment.name"
+                            class="accent--text"
+                            color="accent"
                             :rules="nameRules"
                             label="Name"
                             counter="15"
@@ -40,12 +42,16 @@
                             v-model="assignment.description"
                             :rules="descriptionRules"
                             label="Description"
+                            color="accent"
+                            class="accent--text"
                             counter
                           ></v-textarea>
                         </v-row>
                         <v-row>
                           <v-select
                             v-model="assignment.type"
+                            color="accent"
+                            class="accent--text"
                             :rules="typeRules"
                             :items="types"
                             label="Type"
@@ -55,6 +61,8 @@
                         <v-row>
                           <v-text-field
                             v-model="assignment.points"
+                            color="accent"
+                            class="accent--text"
                             :rules="pointsRules"
                             label="Points"
                             required
@@ -63,7 +71,7 @@
                         </v-row>
                         <v-row>
                           <v-spacer />
-                          <v-btn @click="stepper = 2" :disabled="!valid"
+                          <v-btn color="primary" class="accent--text" @click="stepper = 2" :disabled="!valid"
                             >Next</v-btn
                           >
                         </v-row>
@@ -73,15 +81,16 @@
               </v-stepper-content>
               <v-stepper-content step="2">
                 <div class="px-12 pt-10 pb-5">
-                  <v-row justify="center">
+                  <v-row justify="center" class="accent--text">
                     <h1>Choose assignee</h1>
                   </v-row>
                   <v-row justify="center">
                     <v-radio-group v-model="assignment.assignee">
-                      <v-radio label="Unassigned" :value="myGroup.id"></v-radio>
+                      <v-radio label="Unassigned" color="secondary" class="accent--text" :value="myGroup.id"></v-radio>
                       <template v-for="member in myGroupMembers">
                         <v-radio
                           v-bind:key="member.id"
+                          color="secondary" class="accent--text"
                           :label="member.data.login"
                           :value="member.data.id"
                         ></v-radio>
@@ -90,6 +99,7 @@
                   </v-row>
                   <v-row justify="end">
                     <v-btn
+                    color="primary" class="accent--text"
                       @click="stepper = 3"
                       :disabled="assignment.assignee === ''"
                       >Next</v-btn
@@ -112,6 +122,8 @@
                         <v-text-field
                           v-model="beginDate"
                           label="Begin date"
+                          color="accent" 
+                          class="accent--text"
                           prepend-icon="mdi-calendar"
                           readonly
                           v-bind="attrs"
@@ -120,6 +132,8 @@
                       </template>
                       <v-date-picker
                         v-model="beginDate"
+                        color="secondary"
+                        class="accent--text"
                         @input="menuBeginDate = false"
                       ></v-date-picker>
                     </v-menu>
@@ -138,6 +152,7 @@
                         <v-text-field
                           v-model="beginTime"
                           label="Begin time"
+                          color="accent"
                           prepend-icon="mdi-calendar"
                           readonly
                           v-bind="attrs"
@@ -147,6 +162,8 @@
                       <v-time-picker
                         v-if="menuBeginTime"
                         v-model="beginTime"
+                        color="accent"
+                        class="accent--text"
                         full-width
                         format="24hr"
                         @click:minute="$refs.menuBeginTime.save(beginTime)"
@@ -166,6 +183,7 @@
                         <v-text-field
                           v-model="endDate"
                           label="End date"
+                          color="secondary"
                           prepend-icon="mdi-calendar"
                           readonly
                           v-bind="attrs"
@@ -174,6 +192,8 @@
                       </template>
                       <v-date-picker
                         v-model="endDate"
+                        color="secondary"
+                        class="accent--text"
                         @input="menuEndDate = false"
                       ></v-date-picker>
                     </v-menu>
@@ -192,6 +212,7 @@
                         <v-text-field
                           v-model="endTime"
                           label="End time"
+                          color="secondary"
                           prepend-icon="mdi-calendar"
                           readonly
                           v-bind="attrs"
@@ -201,6 +222,8 @@
                       <v-time-picker
                         v-if="menuEndTime"
                         v-model="endTime"
+                        color="secondary"
+                        class="accent--text"
                         full-width
                         format="24hr"
                         @click:minute="$refs.menuEndTime.save(endTime)"
@@ -209,6 +232,7 @@
                   </v-row>
                   <v-row justify="end">
                     <v-btn
+                    color="primary" class="accent--text"
                       @click="
                         saveDates();
                         stepper = 4;
@@ -223,7 +247,7 @@
                 <v-row justify="center">
                   <div class="px-12 pt-10 pb-5">
                     <v-card width="250px">
-                      <v-card raised outlined>
+                      <v-card raised outlined color="primary" class="accent--text">
                         <v-card-title>
                           {{ assignment.name }}
                           <v-spacer />
@@ -238,7 +262,7 @@
                         </v-card-text>
                         <v-card-actions>
                           <v-spacer />
-                          <v-btn @click="registerInApi()">Register</v-btn>
+                          <v-btn color="primary" class="accent--text" @click="registerInApi()">Register</v-btn>
                         </v-card-actions>
                       </v-card>
                     </v-card>

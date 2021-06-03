@@ -1,20 +1,20 @@
 <template>
   <div>
-    <v-app-bar app color="primary" dark v-if="!$vuetify.breakpoint.sm && !$vuetify.breakpoint.xs">
-      <v-btn class="mx-1" @click="redirectTo('/main/create')">Create</v-btn>
+    <v-app-bar app color="secondary" dark v-if="!$vuetify.breakpoint.sm && !$vuetify.breakpoint.xs">
+      <v-btn class="mx-1 accent--text" color="primary" @click="redirectTo('/main/create')">Create</v-btn>
       <v-spacer />
-      <v-btn class="mx-1" @click="redirectTo('/main/assignments')"
+      <v-btn class="mx-1 accent--text" color="primary" @click="redirectTo('/main/assignments')"
         >Manage household duties</v-btn
       >
-      <v-btn class="mx-1" @click="redirectTo('/main/group')"
+      <v-btn class="mx-1 accent--text" color="primary" @click="redirectTo('/main/group')"
         >My Household</v-btn
       >
-      <v-btn class="mx-1" @click="redirectTo('/main/tasks')">My Duties</v-btn>
-      <v-btn class="mx-1" @click="redirectTo('/main/ranking')">Ranking</v-btn>
-      <v-btn class="mx-1" @click="redirectTo('/main/list')"
+      <v-btn class="mx-1 accent--text" color="primary" @click="redirectTo('/main/tasks')">My Duties</v-btn>
+      <v-btn class="mx-1 accent--text" color="primary" @click="redirectTo('/main/ranking')">Ranking</v-btn>
+      <v-btn class="mx-1 accent--text" color="primary" @click="redirectTo('/main/list')"
         >Shopping List</v-btn
       >
-      <v-btn class="mx-1" @click="logout()">Logout</v-btn>
+      <v-btn class="mx-1 accent--text" color="primary" @click="logout()">Logout</v-btn>
     </v-app-bar>
     <v-app-bar app color="primary" dark v-else>
       <v-app-bar-nav-icon
@@ -23,7 +23,7 @@
       <v-spacer/>
       <v-btn @click="logout()">Logout</v-btn>
     </v-app-bar>
-    <v-navigation-drawer absolute temporary v-model="navigation">
+    <v-navigation-drawer absolute temporary v-model="navigation" color="secondary">
       <v-list-item link to="/main/create">
         <v-list-item-content>
           <v-list-item-title>Create</v-list-item-title>

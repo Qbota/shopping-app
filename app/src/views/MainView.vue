@@ -1,5 +1,5 @@
 <template>
-  <v-content>
+  <v-content :style="{background: $vuetify.theme.themes.light.primary}">
     <NavBarComponent/>
     <router-view/>
   </v-content>

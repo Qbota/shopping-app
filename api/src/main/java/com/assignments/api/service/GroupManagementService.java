@@ -3,10 +3,7 @@ package com.assignments.api.service;
 import com.assignments.api.error.exception.CodeGenerationException;
 import com.assignments.api.error.exception.DocumentNotFoundException;
 import com.assignments.api.error.exception.UserAlreadyInGroupException;
-import com.assignments.api.model.Assignment;
-import com.assignments.api.model.Group;
-import com.assignments.api.model.RankingItemDTO;
-import com.assignments.api.model.User;
+import com.assignments.api.model.*;
 import com.assignments.api.repository.AssignmentRepository;
 import com.assignments.api.repository.GroupRepository;
 import com.assignments.api.repository.UserRepository;
@@ -102,7 +99,10 @@ public class GroupManagementService {
                 .map(user -> new RankingItemDTO(
                         user.getLogin(),
                         assignmentRepository.findByAssignee(user.getId()).orElse(Collections.emptyList())
-                                .stream().mapToInt(Assignment::getPoints).reduce(0, Integer::sum))
+                                .stream()
+                                .filter(assignment -> assignment.getState().equals(State.DONE))
+                                .mapToInt(Assignment::getPoints)
+                                .reduce(0, Integer::sum))
                 ).sorted(Comparator.comparingInt(RankingItemDTO::getPoints).reversed())
                 .collect(Collectors.toList());
     }

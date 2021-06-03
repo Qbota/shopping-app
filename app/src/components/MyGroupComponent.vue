@@ -12,6 +12,9 @@
       <div class="filter mx-2">
         <v-select
           v-model="typeFilter"
+          color="accent"
+          item-color="accent"
+          class="accent--text"
           label="type"
           :items="assignments.map((x) => x.type).concat('Any')"
         />
@@ -19,6 +22,9 @@
       <div class="filter mx-2">
         <v-select
           v-model="stateFilter"
+          color="accent"
+          item-color="accent"
+          class="accent--text"
           label="state"
           :items="assignments.map((x) => x.state).concat('Any')"
         />
@@ -26,6 +32,9 @@
       <div class="filter mx-2">
         <v-select
           v-model="assigneeFilter"
+          color="accent"
+          item-color="accent"
+          class="accent--text"
           label="assignee"
           :items="assignments.map((x) => x.assignee).concat('Any')"
         />
@@ -43,6 +52,9 @@
             <v-text-field
               v-model="beginDateFilter"
               label="Begin date"
+              color="accent"
+              item-color="accent"
+              class="accent--text"
               prepend-icon="mdi-calendar"
               readonly
               v-bind="attrs"
@@ -51,6 +63,7 @@
           </template>
           <v-date-picker
             v-model="beginDateFilter"
+            color="secondary"
             @input="menuBeginDate = false"
           ></v-date-picker>
         </v-menu>
@@ -67,7 +80,10 @@
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
               v-model="endDateFilter"
-              label="Begin date"
+              label="End date"
+              color="accent"
+              item-color="accent"
+              class="accent--text"
               prepend-icon="mdi-calendar"
               readonly
               v-bind="attrs"
@@ -76,22 +92,29 @@
           </template>
           <v-date-picker
             v-model="endDateFilter"
+            color="secondary"
             @input="menuEndDate = false"
           ></v-date-picker>
         </v-menu>
       </div>
       <div class="mt-3 mx-2">
-        <v-btn @click="resetDatesFilters()">Any dates</v-btn>
+        <v-btn
+          color="primary"
+          class="accent--text"
+          @click="resetDatesFilters()"
+          >Any dates</v-btn
+        >
       </div>
     </v-row>
     <v-row justify="center">
       <template v-for="assignment in getFilteredAssignments()">
         <v-card
+          color="primary"
           width="200pt"
           raised
           outlined
           v-bind:key="assignment.id"
-          class="mx-3 mb-3"
+          class="mx-3 mb-3 accent--text"
         >
           <v-card-title>
             {{ assignment.name }}

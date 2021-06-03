@@ -1,10 +1,11 @@
 <template>
-  <v-card raised outlined v-on:keyup.enter="loginAction()">
+  <v-card raised outlined v-on:keyup.enter="loginAction()" color="primary" width="300pt">
     <v-form class="px-12 pt-10 pb-5">
       <v-row>
         <v-text-field
           v-model="user.login"
           placeholder="Login"
+          color="accent"
           prepend-icon="fas fa-user"
         />
       </v-row>
@@ -13,17 +14,18 @@
           v-model="user.password"
           placeholder="Password"
           type="password"
+          color="accent"
           prepend-icon="fas fa-user-shield"
         />
       </v-row>
       <v-row>
         <v-spacer />
-        <v-btn @click="loginAction()">Login</v-btn>
+        <v-btn class="accent--text" @click="loginAction()" color="primary">Login</v-btn>
       </v-row>
     </v-form>
     <v-card-actions>
       <v-row justify="center">
-        <v-btn class="mb-4" @click="$router.push('register')">Register</v-btn>
+        <v-btn class="mb-4 accent--text" @click="$router.push('register')" color="primary">Register</v-btn>
       </v-row>
     </v-card-actions>
     <v-snackbar v-model="snackBar" top>

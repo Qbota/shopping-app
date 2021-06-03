@@ -1,5 +1,5 @@
 <template>
-  <v-content>
+  <v-content :style="{background: $vuetify.theme.themes.light.primary}">
     <v-container fill-height>
       <v-row justify="center">
         <h1>Hello in my application!</h1>
@@ -13,7 +13,7 @@
         <router-view />
       </v-row>
     </v-container>
-    <v-footer absolute>
+    <v-footer absolute color="secondary">
       Version 0.2
     </v-footer>
   </v-content>

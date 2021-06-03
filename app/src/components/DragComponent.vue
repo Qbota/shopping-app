@@ -1,9 +1,8 @@
 <template>
-  <v-app id="inspire">
     <v-content>
       <v-container fluid>
         <v-row justify="center">
-          <v-list two-line elevation="1">
+          <v-list two-line color="secondary" elevation="1">
             <v-subheader> Not assigned </v-subheader>
             <draggable
               v-model="groupItems"
@@ -16,8 +15,9 @@
                   width="150pt"
                   raised
                   outlined
+                  color="primary"
                   v-bind:key="item.id"
-                  class="mx-3 mb-3"
+                  class="mx-3 mb-3 accent--text"
                   v-if="item.state.toLowerCase() !== 'done'"
                 >
                   <v-card-title
@@ -49,6 +49,7 @@
               class="mx-3 my-3"
               v-bind:key="member.id"
               two-line
+              color="secondary"
               elevation="1"
               width=""
             >
@@ -66,8 +67,9 @@
                     width="150pt"
                     raised
                     outlined
+                    color="primary"
                     v-bind:key="item.id"
-                    class="mx-3 mb-3"
+                    class="mx-3 mb-3 accent--text"
                     v-if="item.state.toLowerCase() !== 'done'"
                   >
                     <v-card-title
@@ -93,19 +95,19 @@
         </v-row>
       </v-container>
       <v-dialog v-model="changeStateDialog" scrollable max-width="300pt">
-        <v-card>
+        <v-card color="secondary" class="accent--text">
           <v-card-title>Choose state</v-card-title>
           <v-card-text>
             <v-radio-group v-model="radioValue">
-              <v-radio label="To Do" value="To Do"></v-radio>
-              <v-radio label="In Progress" value="In Progress"></v-radio>
-              <v-radio label="Done" value="Done"></v-radio>
+              <v-radio color="accent" label="To Do" value="To Do"></v-radio>
+              <v-radio color="accent" label="In Progress" value="In Progress"></v-radio>
+              <v-radio color="accent" label="Done" value="Done"></v-radio>
             </v-radio-group>
           </v-card-text>
           <v-card-actions>
             <v-spacer />
-            <v-btn @click="updateTaskState()">Confirm</v-btn>
-            <v-btn @click="closechangeStateDialog()">Cancel</v-btn>
+            <v-btn color="primary" class="accent--text" @click="updateTaskState()">Confirm</v-btn>
+            <v-btn color="primary" class="accent--text" @click="closechangeStateDialog()">Cancel</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -137,7 +139,6 @@
         </v-card>
       </v-dialog>
     </v-content>
-  </v-app>
 </template>
 
 <script>

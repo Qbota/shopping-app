@@ -3,7 +3,7 @@
     <v-container>
       <v-row justify="center">
         <v-col cols="9">
-          <v-card class="px-3 pt-3">
+          <v-card class="px-3 pt-3" color="secondary">
             <v-card-title>
               List
               <v-spacer></v-spacer>
@@ -14,12 +14,13 @@
                 single-line
                 hide-details
               ></v-text-field>
-              <v-btn class="ml-6 mt-3" @click="createDialog = true">
+              <v-btn color="primary" class="ml-6 mt-3 accent--text" @click="createDialog = true">
                 Add
               </v-btn>
             </v-card-title>
             <v-data-table
               v-model="selected"
+              class="secondary"
               :headers="headers"
               :items="shoppingItems"
               :search="search"
@@ -52,7 +53,7 @@
       </v-row>
     </v-container>
     <v-dialog v-model="deleteConfirmDialog" width="400">
-      <v-card>
+      <v-card color="primary">
         <v-card-title> Confirmation </v-card-title>
         <div class="mx-5">
           Are you sure you want to delete <b>{{ toBeRemoved.name }}</b> from the
@@ -68,23 +69,23 @@
     <v-dialog v-model="createDialog" width="500">
       <v-card>
         <v-card-title>
-          Create new item to buy
+          Add item to the list
         </v-card-title>
         <v-container>
         <v-row justify="center">
           <v-form v-model="valid" ref="form" lazy-validation>
-            <v-text-field v-model="toBeAdded.name" :rules="textRules" outlined label="Name" rounded/>
-            <v-text-field v-model="toBeAdded.type" :rules="textRules" outlined label="Type" rounded/>
-            <v-text-field v-model="toBeAdded.description" :rules="textRules" outlined label="Description" rounded/>
-            <v-text-field v-model="toBeAdded.quantity" :rules="quantityRules" outlined label="Quantity" rounded/>
-            <v-checkbox v-model="toBeAdded.isCritical" :label="'Is Critical?'"/>
+            <v-text-field color="accent" class="accent--text" v-model="toBeAdded.name" :rules="textRules" label="Name"/>
+            <v-text-field color="accent" class="accent--text" v-model="toBeAdded.type" :rules="textRules" label="Type"/>
+            <v-text-field color="accent" class="accent--text" v-model="toBeAdded.description" :rules="textRules" label="Description"/>
+            <v-text-field color="accent" class="accent--text" v-model="toBeAdded.quantity" :rules="quantityRules" label="Quantity"/>
+            <v-checkbox color="accent" v-model="toBeAdded.isCritical" :label="'Is Critical?'"/>
           </v-form>
         </v-row>  
         </v-container>
         <v-card-actions>
           <v-spacer />
-          <v-btn :disabled="!valid" @click="createItem()">Confirm</v-btn>
-          <v-btn @click="createDialog = false">Cancel</v-btn>
+          <v-btn color="primary" class="accent--text" :disabled="!valid" @click="createItem()">Confirm</v-btn>
+          <v-btn color="primary" class="accent--text" @click="createDialog = false">Cancel</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

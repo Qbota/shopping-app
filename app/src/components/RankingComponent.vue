@@ -3,8 +3,8 @@
     <v-container>
       <v-row justify="center">
         <v-col cols="8">
-          <v-card class="px-7 py-5" raised outlined>
-          <v-simple-table>
+          <v-card class="px-7 py-5" raised outlined color="secondary">
+          <v-simple-table class="secondary">
             <thead>
               <th class="text-left">Login</th>
               <th class="text-left">Points</th>

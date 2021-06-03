@@ -1,5 +1,5 @@
 <template>
-  <v-card raised outlined>
+  <v-card raised outlined color="primary" width="300pt">
     <v-form v-model="valid" ref="form" class="px-12 pt-10 pb-5">
       <v-row>
         <v-text-field
@@ -8,6 +8,7 @@
           label="Login"
           counter="15"
           required
+          color="accent"
           prepend-icon="fas fa-user"
         />
       </v-row>
@@ -19,6 +20,7 @@
           counter="15"
           type="password"
           required
+          color="accent"
           prepend-icon="fas fa-user-shield"
         />
       </v-row>
@@ -30,15 +32,17 @@
           counter="15"
           type="password"
           required
+          color="accent"
           prepend-icon="fas fa-user-shield"
         />
       </v-row>
     </v-form>
     <v-card-actions>
       <v-spacer /><v-btn
-        class="mb-2 mr-2 px-5"
+        class="mb-2 mr-2 px-5 accent--text"
         :disabled="!valid"
         :loading="loading"
+        color="primary"
         @click="registerInApi()"
         >Register</v-btn
       >

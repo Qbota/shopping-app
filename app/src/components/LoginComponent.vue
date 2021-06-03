@@ -1,6 +1,21 @@
 <template>
-  <v-card raised outlined v-on:keyup.enter="loginAction()" color="primary" width="300pt">
+  <v-card
+    raised
+    outlined
+    v-on:keyup.enter="loginAction()"
+    color="primary"
+    width="300pt"
+  >
     <v-form class="px-12 pt-10 pb-5">
+      <v-row justify="center" class="welcome">
+        <h3>Welcome to House Duties</h3>
+        <p>
+          This application can help you to manage household duties. Feel free to
+          create new account or use credentials below:
+        </p>
+        test<br />
+        test123!
+      </v-row>
       <v-row>
         <v-text-field
           v-model="user.login"
@@ -20,12 +35,19 @@
       </v-row>
       <v-row>
         <v-spacer />
-        <v-btn class="accent--text" @click="loginAction()" color="primary">Login</v-btn>
+        <v-btn class="accent--text" @click="loginAction()" color="primary"
+          >Login</v-btn
+        >
       </v-row>
     </v-form>
     <v-card-actions>
       <v-row justify="center">
-        <v-btn class="mb-4 accent--text" @click="$router.push('register')" color="primary">Register</v-btn>
+        <v-btn
+          class="mb-4 accent--text"
+          @click="$router.push('register')"
+          color="primary"
+          >Register</v-btn
+        >
       </v-row>
     </v-card-actions>
     <v-snackbar v-model="snackBar" top>
@@ -56,7 +78,7 @@ export default {
         .then((res) => {
           this.$store.commit("setUser", res.data);
           console.log(res.data);
-          this.$router.push({name: 'assignments'});
+          this.$router.push({ name: "assignments" });
         })
         .catch(() => this.showErrorMessage());
     },
@@ -66,3 +88,9 @@ export default {
   },
 };
 </script>
+<style>
+.welcome {
+  text-align: justify;
+  text-justify: inter-word;
+}
+</style>

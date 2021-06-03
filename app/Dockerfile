@@ -21,4 +21,4 @@ RUN sed -i 's,http://localhost:8080,https://house-todos-api.herokuapp.com,g' src
 RUN yarn build
 
 EXPOSE 4200
-CMD http-server dist -p$PORT
+CMD http-server dist -p$PORT --proxy http://127.0.0.1:$PORT?

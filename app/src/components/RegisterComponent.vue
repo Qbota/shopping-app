@@ -36,6 +36,9 @@
           prepend-icon="fas fa-user-shield"
         />
       </v-row>
+      <v-row>
+        It's a side project, so please don't use any real credentials
+      </v-row>
     </v-form>
     <v-card-actions>
       <v-spacer /><v-btn
